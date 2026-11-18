@@ -8,10 +8,50 @@ from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from server import Store, restore_archive
-from research_wiki import dump
+from research_wiki import dump, locate_segment_evidence
 
 
 class WikiTests(unittest.TestCase):
+    def test_one_validation_repair_preserves_strict_rejection_and_checkpoints(self):
+        params={'topic_id':self.topic,'task':'wiki.extract','entry_ids':[self.ids[0]]}
+        task=self.s.new_task(params)['id'];self.s.update(task,status='running')
+        bad={'content':dump({'records':[self.body(evidence=[{'quote':'伪造的引文'}])]})}
+        good={'content':dump({'records':[self.body()]})}
+        with patch.object(self.s,'model_call',side_effect=[bad,good]) as call:
+            result=self.w.extract(params,task)
+            self.assertEqual(call.call_count,2)
+            self.assertEqual([m['role'] for m in call.call_args.args[1]],['system','user','assistant','user'])
+            self.assertIn('伪造的引文',call.call_args.args[1][-1]['content'])
+        self.assertEqual(result['chunks'],1)
+        self.assertEqual(len(self.s.rows('SELECT * FROM wiki_checkpoints')),1)
+        with self.s.db() as db:db.execute('DELETE FROM wiki_checkpoints')
+        with patch.object(self.s,'model_call',side_effect=[bad,bad]) as call:
+            with self.assertRaisesRegex(ValueError,'证据不在当前正文分段'):self.w.extract(params,task)
+            self.assertEqual(call.call_count,2)
+        self.assertEqual(self.s.rows('SELECT * FROM wiki_checkpoints'),[])
+
+    def test_pdf_line_wrapping_retains_the_exact_source_and_model_quote(self):
+        text='前言。采用资源\n  基础观解释企业行为。'
+        value={'quote':'采用资源基础观解释企业行为。'}
+        locate_segment_evidence(value,text,100,'paper')
+        self.assertEqual(value['quote'],text[3:])
+        self.assertEqual(value['model_quote'],'采用资源基础观解释企业行为。')
+        self.assertEqual(value['match_method'],'whitespace_only')
+        self.assertEqual((value['start'],value['end']),(103,100+len(text)))
+        source=self.w.source(self.ids[0])
+        evidence={'quote':'本文采用资源基础观，使用CFPS2020数据。'}
+        locate_segment_evidence(evidence,source['text'],0,self.ids[0])
+        proposal=self.propose(self.body(evidence=[evidence]))
+        saved=self.detail(proposal)['records'][0]['body']['evidence'][0]
+        self.assertEqual(source['text'][saved['start']:saved['end']],saved['quote'])
+        self.assertEqual(saved['model_quote'],evidence['model_quote'])
+        self.assertEqual(saved['match_method'],'whitespace_only')
+
+    def test_missing_ambiguous_and_incorrectly_positioned_quotes_still_fail(self):
+        for value,text in [({'quote':'采用不存在理论'},'采用资源\n基础观'),({'quote':'资源基础观'},'资源\n基础观。资源 基础观'),({'quote':'资源基础观','start':0,'end':5},'资源\n基础观')]:
+            with self.assertRaises(ValueError):locate_segment_evidence(value,text,0,'paper')
+        with self.assertRaises(ValueError):self.propose(self.body(evidence=[{'quote':'本文采用资源基础观','model_quote':'使用不存在理论','match_method':'whitespace_only'}]))
+
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory(); self.root=Path(self.tmp.name)
         self.s=Store(self.root/'home'); self.w=self.s.wiki

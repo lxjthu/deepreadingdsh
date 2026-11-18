@@ -1,14 +1,14 @@
 /** Translate the business conversation without flattening assistant history. */
 export function requestOptions(request, llmMessages, config, signal) {
-  const { createAssistantMessage, createSystemMessage } = llmMessages;
+  const { createAssistantMessage, createSystemMessage, createUserMessage } = llmMessages;
   const messages = request.messages.map(m => {
     const content = [{ type: 'text', text: m.content }];
     if (m.role === 'system') return createSystemMessage(m.content);
     if (m.role === 'assistant') return createAssistantMessage({ content, source: { provider: config.provider, model: config.model } });
-    if (m.role === 'user') return { role: 'user', content };
+    if (m.role === 'user') return createUserMessage({ content, source: { kind: 'user' } });
     throw new Error('Unsupported business message role: ' + m.role);
   });
-  return { provider: config.provider, model: config.model, messages, maxTokens: config.maxTokens ?? 16384, signal };
+  return { provider: config.provider, model: config.model, messages, ...(config.reasoningEffort === undefined ? {} : { reasoningEffort: config.reasoningEffort }), ...(config.maxTokens === undefined ? {} : { maxTokens: config.maxTokens }), signal };
 }
 
 export async function generate(llm, options) {

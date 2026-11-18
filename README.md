@@ -4,7 +4,7 @@ DeepSeek Harness 文献研究插件。阅读助手不设登录页面、不要求
 
 ## 使用
 
-本机已安装环境：`D:/code/dsh-deep-reading-runtime/.venv`。插件安装到 dsh `web` profile 后，重新启动该 profile 即会启动工作台。
+插件适配桌面运行时 `0.2.2-rc.3`。业务 Python 需要安装 `upstream/requirements.txt` 中的依赖；本机已存在的环境可以直接复用。插件安装到 `desktop` profile 后，重新启动桌面应用。
 
 在 dsh 原生左侧栏点击 **文献研究**，工作台直接显示在 dsh 主面板，创建主题、导入文件、精读及创意实验室都在面板内操作。内嵌页面通过 dsh 同源路由与自身访问认证连接后台，浏览器端不需要阅读助手的额外访问标识。也保留 `deep-reading-workbench` 技能和独立本地网页入口。
 
@@ -47,15 +47,15 @@ DeepSeek Harness 文献研究插件。阅读助手不设登录页面、不要求
 
 ## 本地 OCR
 
-PDF 默认用 Unlimited OCR 二代逐页识别。复用本机 `D:/code/paddleocr/Unlimited-OCR-env`、`Unlimited-OCR-model` 与已部署的官方二代转换函数，保存原 PDF、原始识别、图片、页号和抽取结果；不下载模型、不安装 PyTorch。可靠文字层的 PDF 可显式选择快速提取。
+PDF 默认用 Unlimited OCR 二代逐页识别。复用本机 `C:/ocr/Unlimited-OCR-env`、`Unlimited-OCR-model` 与已部署的官方二代转换函数，保存原 PDF、原始识别、图片、页号和抽取结果；不下载模型、不安装 PyTorch。可靠文字层的 PDF 可显式选择快速提取。
 
 安装包不含 Python、OCR 权重或共享 PyTorch。换电脑需要准备兼容环境，并在资料目录的 `runtime.json` 中指定：
 
 ```json
 {
-  "python": "D:/code/dsh-deep-reading-runtime/.venv/Scripts/python.exe",
-  "ocrRoot": "D:/code/paddleocr",
-  "ocrPython": "D:/code/paddleocr/Unlimited-OCR-env/Scripts/python.exe"
+  "python": "C:/research-python/Scripts/python.exe",
+  "ocrRoot": "C:/ocr",
+  "ocrPython": "C:/ocr/Unlimited-OCR-env/Scripts/python.exe"
 }
 ```
 
@@ -63,7 +63,7 @@ PDF 默认用 Unlimited OCR 二代逐页识别。复用本机 `D:/code/paddleocr
 
 ## 数据与备份
 
-默认资料目录为 `$DSH_HOME/deep-reading`，本机对应 `D:/code/deepseek-harness-runtime/data/deep-reading`。`topics.sqlite3` 保存主题、文献关联、任务和模型交接；`workspace/` 保存统一文献、原件、提示词覆盖、检查点和产物。没有用户角色或 24 小时资料清理。
+初始资料目录由 `config.dataDir` 指定，未指定时为 `$DSH_HOME/deep-reading`（未设置 DSH_HOME 时使用 `~/.dsh`）。通过顶部“资料目录”保存的选择优先，持久化于 `$DSH_HOME/deep-reading-settings.json`。分发包不包含本机资料目录。升级旧版本先按 [升级说明](UPGRADE.md) 保留原路径。`topics.sqlite3` 保存主题、文献关联、任务和模型交接；`workspace/` 保存统一文献、原件、提示词覆盖、检查点和产物。没有用户角色或 24 小时资料清理。
 
 关闭 dsh 会停止本插件的服务；中断任务重开后显示为可续办。已完成模型步骤保留。单个资料目录只允许一个工作台实例；另一 dsh 实例可使用插件配置的独立 `dataDir`。
 
@@ -73,17 +73,17 @@ PDF 默认用 Unlimited OCR 二代逐页识别。复用本机 `D:/code/paddleocr
 python scripts/server.py --home D:/research/restored --restore D:/backups/research.zip
 ```
 
-然后将插件的 `dataDir` 指向新目录。恢复命令拒绝覆盖旧目录和压缩包越界路径。
+然后通过顶部“资料目录”启用恢复的新目录。恢复命令拒绝覆盖旧目录和压缩包越界路径。
 
 ## 安装与兼容
 
-针对本机 dsh `0.2.0-rc.2` 开发。通过支持的插件管理器安装：
+适配并使用安装版 `0.2.2-rc.3` 的消息构造与 Cordis 接口验证。通过支持的插件管理器安装本地包：
 
 ```powershell
-dsh plugin --profile web add file:D:/code/dsh-deep-reading/dsh-deep-reading-0.3.1.tgz
+dsh plugin --profile desktop add file:C:/packages/dsh-deep-reading-0.3.4.tgz
 ```
 
-平台预发布接口可能变化；升级 dsh 后需重新核对兼容。原网站及生产数据库未改动。
+平台预发布接口可能变化；升级 dsh 后需重新核对兼容。源码测试与当前桌面验证见 `verification/desktop-0.3.4.md`。
 
 验证记录见源码目录 `verification/`，实施范围见 `PLAN.md`。自动测试、模拟多步恢复、真实 OCR、真实 dsh 模型与浏览器验证分别记录；未逐项进行所有任务的真实模型准确性评测。
 
@@ -103,3 +103,19 @@ dsh plugin --profile web add file:D:/code/dsh-deep-reading/dsh-deep-reading-0.3.
 Wiki 表、候选、版本、归并和分段检查点存于原有 `topics.sqlite3`，独立 `wiki_meta` 记录数据版本。原文主库无需迁移，新表纳入已有 ZIP 一致性备份。恢复仍使用上面的新目录恢复方式。模型桥接没有工具或批准能力；审核操作由工作台界面提交。
 
 验证：`python -m unittest discover -s test -p 'test_*.py'`、`npm test`、`node --check web/wiki.js`；隔离浏览器验证为 `python verification/wiki_browser.py`，复用本机 Playwright 浏览器。受控模型响应和虚构测试论文只验证流程，不表示真实论文抽取准确率。
+
+## 资料目录设置（0.3.4）
+
+“文献研究”面板顶部的“资料目录”显示实际生效路径，支持宿主原生“选择文件夹”和手工粘贴完整路径。点击“保存并启用”后验证目录，等待旧后台退出、新后台就绪，再持久化设置并重新加载工作台。取消不保存。空目录会初始化为新库；不兼容、损坏、来源不明的非空目录和被占用目录会被拒绝。运行、排队任务或尚未退出的执行实例存在时禁止切换。
+
+切换不搬迁、合并、删除原资料，原目录仍可再次启用。保存或启动失败时尝试恢复旧后台；恢复失败显示真实失败状态，可通过“重试连接”重试，或选择另一个有效目录。无无限自动重启。桌面原生选择器由宿主 `directoryPicker` 提供；没有 native 能力的宿主请手工填写路径。
+
+业务 Python、OCR 根目录和 OCR Python 属于本机设置。首次从原资料库 `runtime.json` 读取这些字段后存入机器设置文件，空库也能复用；OCR 执行时新库显式配置的 `runtime.json` 字段优先。不安装或修改 OCR、PyTorch 和模型。机器设置文件不包含凭据，也不随资料备份导出。
+
+每次新模型请求读取宿主当前默认模型和推理强度；显式插件模型配置仍可覆盖它们。没有显式 `maxTokens` 时继承宿主提供商默认值。已完成且可复用的步骤保持原结果，不因切换模型重做。取消针对当前执行实例持续有效，立即续办不会取消旧实例的中断信号。
+
+真实模型用量保存在 `calls.response`、任务的 `model_calls` 字段，以及精读步骤记录中的 `usage`。没有返回用量时保留未知值，不填零、不估算。直接使用 `ctx.llm` 复用路由与认证，不创建聊天 Session，也不自动计入桌面聊天统计。
+
+Wiki 抽取对 PDF 换行导致的纯空白差异，只在当前分段中唯一匹配时定位回原文，保存实际原文、原始模型引文与 whitespace_only 标记。正文字符、标点的差异、位置歧义和错误显式位置仍拒绝；候选继续等待人工核对。
+
+Wiki 候选校验失败时有一轮带校验反馈的模型修正，修正结果仍执行相同严格校验；再次失败会停止该分段，不写入未经验证的检查点。跨页脚注打断的句子必须使用多个连续原文片段，不能拼接成逐字引文。修正调用的真实用量也计入任务记录。

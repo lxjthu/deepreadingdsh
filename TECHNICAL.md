@@ -1,241 +1,49 @@
-# dsh-deep-reading 技术文档
+# dsh-deep-reading 技术说明
 
-> 面向后续接手或协作审阅的 agent 与维护者。记录本插件是什么、本次为接入桌面版所做的适配改动、部署方式、数据与 OCR 配置，以及已知遗留问题。
+当前修复版为 0.3.4，目标宿主为桌面运行时 0.2.2-rc.3。宿主版本读取 runtime.json 的 desktopVersion；Electron 的 version 文件不代表产品版本。
 
-## 1. 概览
+## 实现与数据所有权
 
-`dsh-deep-reading` 是一个 DeepSeek Harness（下称 dsh）的第三方文献研究插件。它以「按研究主题管理的文献库」为核心，提供文献精读、全文翻译、证据问答、跨文献比较、主题综述、经济管理创意实验室，以及本地 OCR（Unlimited OCR 二代）与跨论文研究 Wiki 等功能。
+index.js 注册宿主代理和技能并管理资料目录；service.js 拥有一个 Python 子进程、就绪等待、模型桥接和关闭过程。bridge.js 使用安装运行时的 createSystemMessage、createUserMessage 和 createAssistantMessage；用户消息带 source.kind=user，助手 source 由提供商、模型与构造器生成。reasoningEffort 来自当前默认选择；maxTokens 未显式配置时不传递，提供商负责默认值。
 
-插件安装到 dsh 后，在**左侧栏**出现「文献研究」入口，点击后在主面板内嵌一个 Web 工作台（iframe 指向同源路由 `/deep-reading/`），所有文献管理、精读、创意实验室都在该工作台内操作。
+client.js 通过宿主共享 React 与 slot 注册主面板、侧栏。设置控件位于 iframe 外层，使用宿主 locale 字典和 t；主业务仍通过同源 /deep-reading/ iframe 显示。原生选择器声明 directoryPicker 注入，调用 capability().kind=native 的 pick(signal)。无需修改宿主 packages 或 app.asar。
 
-### 1.1 关键标识
+同源控制 /deep-reading/control/* 与业务代理共用 connection.admit 的 Host/Origin 与身份校验。控制请求仅接受指定 GET/POST 和有大小上限的 JSON；后台令牌仅由 Node 注入代理请求，Cookie 不进入 Python。工作台不能访问 /bridge/*。内部模型交接仍由随机 loopback 端口的 Python 后台接收认证请求。
 
-| 项 | 值 |
-| --- | --- |
-| 包名 | `dsh-deep-reading` |
-| 版本 | `0.3.1` |
-| 源码目录 | `D:\code\dsh-deep-reading` |
-| git | 本地仓库，提交 `b95cfb5` |
-| 目标宿主 | dsh 桌面版（Electron），运行时版本 `0.2.2-rc.3` |
-| 许可证 | Apache-2.0 |
+## 取消、续办与用量
 
-### 1.2 定位澄清
+Python 单 worker 为每次执行建立独立 Event，取消持有 mutex 设置该 Event，同时将当前调用置为 abandoned。续办仅把业务任务重新排队，不清除旧 Event。model_call 和 BridgeClient 在取回或保存结果前检查当前执行实例，旧 lease 的迟到响应被拒绝。worker 只有当前执行未取消才更新终态；旧实例退出后才领取续办任务。已有文件、精读步骤和 Wiki 分段检查点继续复用。
 
-本插件**不是**官方 dsh 仓库的一部分，也**不是** `lit-review` 技能的直接产物。它最初是为 dsh `0.2.0-rc.2`（官方 npm Web 版）开发的独立插件，本次工作是把它**适配**到 dsh `0.2.2-rc.3` 桌面版。
+calls.response 保存真实模型响应与 usage，任务状态和完成结果返回 model_calls；NativeClient 保留 usage 到步骤检查点，未知值保持 null 或字段缺失。插件不伪造 Session 事件，不把任务用量声称为聊天统计。模型来源是宿主报告，未作独立提供商身份认证。
 
-> 注：本次会话早期还做过一个临时的 `deepreadingagent` 插件（仅 5 个简单工具 + 静态引导面板），已被 `dsh-deep-reading` 取代并卸载。不要混淆两者。
+## 生命周期
 
-## 2. 架构
+清理由 ctx.effect 返回的 async disposer 执行；ctx.on('dispose') 在此安装运行时不承担资源清理。卸载先关闭入口、停止新工作、中断模型与监控，再请求 Python shutdown，等待模型流和进程 close。超时仅终止本实例拥有的进程树并等待结果；Windows 必须包含 venv 启动器的子进程。正常 Python 关闭设置 stop、终止其 OCR 子进程并 join worker。未 ready 卸载、启动失败、异常退出和重载都有明确清理路径。
 
-插件是「单包、三入口」结构：
+每个 ReadingService 独立持有子进程、令牌、定时器和 descriptor。退出清除 base 并只删除令牌仍匹配自己的 connection.json；旧实例的事件不会访问新实例字段。启动、失败、切换、就绪、停止在外层设置栏显示。没有无上限自动恢复。
 
-```
-dsh-deep-reading/
-├── index.js          # 宿主入口（Node 侧）：apply(ctx, config)
-├── bridge.js         # 模型消息转换 + 流式生成辅助
-├── panel-proxy.js    # 同源 HTTP 反向代理（/deep-reading/ → Python 后台）
-├── client.js         # 浏览器入口：__ModuleLoader__.load 注册侧栏图标 + 主面板
-├── cordis.patch.yml  # bundle patch：insert 宿主行（带 dataDir config）
-├── scripts/          # Python 后台（server.py + 精读/OCR/Wiki 模块）
-├── upstream/         # 上游脚本、提示词、资产、技能 SKILL.md
-└── web/              # 内嵌 Web 工作台前端（app.js / wiki.js / index.html）
-```
+## 目录事务
 
-### 2.1 数据流
+设置选择优先于 config.dataDir，再次才是默认目录。机器设置位于 DSH_HOME/deep-reading-settings.json；未设置 DSH_HOME 时在 ~/.dsh。新包的 bundle patch 只插入插件，不含本机路径。本机升级前保留原路径与 Python/OCR 字段，详见 UPGRADE.md。
 
-```
-dsh 宿主 (Node)
-  ├─ apply(ctx, config)
-  │   ├─ 读 dataDir → 读 runtime.json（OCR/Python 路径）
-  │   ├─ spawn Python server.py（子进程，监听随机本地端口）
-  │   ├─ 注册 /deep-reading/ 同源代理（panel-proxy.js）
-  │   ├─ 注册 deep-reading-workbench 技能（ctx.skills.register）
-  │   └─ 轮询 Python 后台的 /bridge/next，把模型请求转发给 dsh 的 ctx.llm
-  │
-  └─ Python 后台 server.py
-      ├─ topics.sqlite3（主题、文献、任务、Wiki 表）
-      └─ workspace/（文献原文、产物、检查点）
+server.py --validate-home 在构造 Store 前验证绝对路径、文件夹、单实例占用、数据库版本与完整性、必要表字段、工作区版本和索引，并以唯一探针检查写入能力。检查不覆盖研究文件。只有 PID 已结束时才清理遗留服务锁；锁内容不完整或进程仍活跃时拒绝。格式兼容检查要求现有 user_version=1，不升级或降级其他版本。
 
-浏览器 (client.js)
-  ├─ 侧栏图标「文献研究」→ sidebar.panellist
-  └─ 主面板 iframe → /deep-reading/（同源，经 panel-proxy 转发到 Python 后台）
-```
+切换时先验证候选，在后端 mutex 下确认没有运行/排队任务和活动 worker，停止接收新任务；等待旧实例退出，再验证并启动新实例、确认状态、原子保存机器设置。失败时停止候选实例并重启旧目录；旧目录恢复也失败时展示实际失败。候选空目录可能已初始化，保留供用户检查。原库不迁移、合并或删除；再次启用原库会读取已有内容。成功后 iframe 重新挂载，清除当前主题缓存和文献选择。
 
-### 2.2 模型桥接
+机器 Python/OCR 字段从旧 runtime.json 保留到机器设置，传入 Python 的环境只包含这组非凭据设置。OCR 执行使用新库 runtime.json 显式字段覆盖机器默认，切换不修改任一旧库 runtime.json。
 
-插件不直接调用外部模型 API，而是复用 dsh 的默认模型与既有认证：Python 后台把需要模型处理的任务（精读、翻译、综述等）通过 `/bridge/next` 交给宿主，宿主用 `ctx.llm.stream()` 生成，再把结果 `/bridge/respond` 回 Python 后台。这样复用 dsh 的模型路由、凭据和额度统计。
+## 验证与证据
 
-## 3. 本次适配改动
+Node 测试覆盖消息参数、代理身份校验与 bridge 隔离、进程关闭、早期卸载、异常退出和生成中关闭。Python 测试覆盖队列、取消立即续办、迟到结果、失败续办、已有检查点、Wiki 来源校验和目录格式。安装版 Electron/Node 可运行 verification/runtime-check.cjs 与 verification/controller-check.cjs：使用安装包内真实消息构造器和 Cordis，验证实际注入约束、目录事务、保存失败恢复、重载持久化和卸载等待，不以自制 Context 替代运行时。
 
-本次工作的目标是让原本面向 dsh `0.2.0-rc.2` 的插件，在 dsh `0.2.2-rc.3` 桌面版上正确激活并复用原有数据。
+真实桌面与用户指定论文的结果记录于 verification/desktop-0.3.4.md。已有旧 Web 验证记录保留为历史材料，不作为本次桌面验收证据。命令通过、插件 active 或文件存在均不足以证明界面、模型输出及文献精度已通过。
 
-### 3.1 改动清单
+## 本机故障记录的解释
 
-只改了 3 个文件，均为跨版本 API 适配：
+0.3.1 的清理事件与等待存在缺口；本次真实 Cordis 回归确认资源清理必须改用 effect disposer。旧桌面进程驻留时本地安装曾报 EPERM；退出该实例后同一安装命令成功。这能证明该次目录占用影响安装，不能据此认定所有历史 EPERM 都是同一个原因。历史关于 profile patch 必然失效、必须把本机路径放入分发包、自动计入聊天额度统计的说法已移除。
 
-#### ① `bridge.js`（关键，不改必崩）
+## PDF 换行与 Wiki 引文
 
-`@deepseek-ai/dsh-llm` 的 `createAssistantMessage` 在 0.2.2 中签名变化：`provider` / `model` 从顶层字段移入 `source` 子对象。
+真实 PDF 测试复现模型去掉换行与排版空格、原文保留空白时，严格子串校验拒绝引文。抽取预处理复用 dra_core.quality.locate_quote，仅接受当前分段内唯一的纯空白差异；回填原始字符区间与原文 quote，另外保存 model_quote 和 match_method=whitespace_only。之后仍执行原来的来源版本、哈希、逐字区间和页码校验。非空白改写、标点差异、歧义和错误显式位置不接受。引文匹配不验证模型解释，研究候选仍须人工确认。
 
-- 旧（0.2.0）：
-  ```js
-  createAssistantMessage({ content, provider: config.provider, model: config.model })
-  ```
-- 新（0.2.2）：
-  ```js
-  createAssistantMessage({ content, source: { provider: config.provider, model: config.model } })
-  ```
-
-新版 `createAssistantMessage` 的 `source` 形如 `{ kind: 'model', provider, model }`，其中 `kind: 'model'` 由函数内部补齐。
-
-#### ② `package.json`（版本对齐）
-
-- `engines.dsh`：`0.2.0-rc.2` → `0.2.2-rc.3`
-- `peerDependencies`：
-  - 移除 `@deepseek-ai/dsh-skill: 0.2.0-rc.2`、`@deepseek-ai/dsh-llm: 0.2.0-rc.2`
-  - 保留并更新 `@deepseek-ai/cordis: ~4.0.4` → `4.1.0`
-
-原因：npm 官方源上 `dsh-skill` / `dsh-llm` 最高只到 `0.1.2-alpha.5`，**不存在** `0.2.0-rc.2` 版本；这些服务由 dsh 运行时（asar 内）提供，桌面版 profile 的 `autoInstallPeers: false` 使 peer 依赖不校验 npm 版本。保留 `cordis@4.1.0` 即可满足运行时。
-
-#### ③ `cordis.patch.yml`（dataDir 配置）
-
-给 insert 的 `deep-reading` 行加上 `config.dataDir`，指向原 runtime 的文献数据目录：
-
-```yaml
-- insert:
-    - id: deep-reading
-      name: dsh-deep-reading
-      config:
-        dataDir: "D:/code/deepseek-harness-runtime/data/deep-reading"
-```
-
-### 3.2 关键经验教训
-
-- **config 覆盖要写进 bundle 自己的 patch，不要靠 profile patch 覆盖。** 曾尝试在桌面版 profile 的 `cordis.patch.yml` 里用 `- id: deep-reading` 覆盖 config，结果**未生效**（插件仍走默认路径 `$DSH_HOME/deep-reading`）。改成 bundle `insert` 时直接携带 config 后一次成功。推测原因是 profile patch 对「已安装 bundle 的 row」的覆盖时机/匹配有问题（未深入排查，留待后续）。
-- **卸载重装时注意残留 Python 子进程。** 插件 `apply` 会 spawn `server.py` 子进程。卸载时若子进程未及时退出，会锁住 `node_modules/dsh-deep-reading` 目录，导致重装报 `EPERM: rename` 失败。解决：先 `Stop-Process` 杀掉残留的 `server.py` 进程，再重装。
-
-## 4. 部署方式
-
-### 4.1 打包
-
-在源码目录执行：
-
-```powershell
-cd D:\code\dsh-deep-reading
-npm pack --ignore-scripts
-```
-
-产物：`dsh-deep-reading-0.3.1.tgz`（约 1.1 MB，含 Python 脚本与 web 资源）。
-
-### 4.2 安装到桌面版
-
-通过 dsh 的插件管理器（`plugin_manager`）安装本地 tarball：
-
-```
-install_bundle  target: file:D:/code/dsh-deep-reading/dsh-deep-reading-0.3.1.tgz
-```
-
-安装后插件会自动激活（`application: "applied"`），左侧栏出现「文献研究」图标。
-
-### 4.3 卸载
-
-```
-remove_bundle  target: dsh-deep-reading
-```
-
-卸载后若需重装，先确认无残留 `server.py` 进程（见 3.2）。
-
-## 5. 数据与 OCR 配置
-
-### 5.1 数据目录（dataDir）
-
-插件数据目录由 `config.dataDir` 决定，默认 `$DSH_HOME/deep-reading`（桌面版即 `C:\Users\langx\.dsh\deep-reading`）。
-
-本次已通过 bundle patch 将 `dataDir` 固定为：
-
-```
-D:\code\deepseek-harness-runtime\data\deep-reading
-```
-
-该目录复用原 runtime 的文献数据，包含：
-
-- `topics.sqlite3` — 主题、文献、任务、Wiki 表（核心数据库）
-- `workspace/` — 文献原文、产物、检查点
-- `runtime.json` — Python 与 OCR 路径配置
-- `backups/` — 备份
-- `connection.json` / `.service.lock` — 运行期连接描述与单实例锁
-
-### 5.2 OCR 环境（runtime.json）
-
-插件启动时读 `dataDir/runtime.json` 获取本机环境路径。当前内容：
-
-```json
-{
-  "python": "D:/code/dsh-deep-reading-runtime/.venv/Scripts/python.exe",
-  "ocrRoot": "D:/code/paddleocr",
-  "ocrPython": "D:/code/paddleocr/Unlimited-OCR-env/Scripts/python.exe"
-}
-```
-
-- `python`：普通业务 Python（需 3.10+，依赖 `upstream/requirements.txt`）
-- `ocrRoot` / `ocrPython`：Unlimited OCR 二代环境（GPU），模型在 `D:/code/paddleocr/Unlimited-OCR-model`
-
-OCR 路径在安装包外，不随插件分发；换机器需重新配置 `runtime.json`。
-
-### 5.3 配置合并逻辑（index.js）
-
-```js
-const home = config.dataDir || join(process.env.DSH_HOME || homedir()/'.dsh', 'deep-reading');
-const local = existsSync(home + '/runtime.json') ? JSON.parse(...) : {};
-const settings = { ...local, ...config };  // config 覆盖 runtime.json
-```
-
-即：`cordis.patch.yml` 里的 config 优先级**高于** `runtime.json`。当前 config 只设了 `dataDir`，OCR 路径仍来自 `runtime.json`。
-
-## 6. 运行时 API 依赖
-
-插件 `apply` 声明依赖以下 dsh 服务（`inject`）：
-
-| 服务 | 用途 |
-| --- | --- |
-| `skills` | 注册 `deep-reading-workbench` 技能 |
-| `llm` | 模型桥接（`ctx.llm.stream`） |
-| `agentDefaultModel` | 读取当前默认模型选择 |
-| `webServer` | 注册 `/deep-reading/` 同源路由 |
-| `connection` | 同源代理的身份校验 |
-
-`@deepseek-ai/dsh-llm` 模块导出依赖：`createAssistantMessage`、`createSystemMessage`（经 bridge.js 使用）。
-
-## 7. 已验证项与遗留问题
-
-### 7.1 已验证
-
-- 插件在 dsh 0.2.2-rc.3 桌面版正确激活（`fiberPhase: active`）
-- 左侧栏出现「文献研究」图标（`sidebar.panellist` 中 id `deep-reading`，order 20）
-- 主面板 `main` slot 注册成功（key `deep-reading`）
-- `deep-reading-workbench` 技能注册成功
-- dataDir 指向原数据目录生效（`connection.json` 写入原目录，默认目录不再被写）
-- Python 后台 `server.py` 正常启动并建立连接
-
-### 7.2 遗留问题（尚未实现）
-
-1. **「设置按钮」未实现。** 用户曾希望有一个图形界面按钮来指定文献数据库路径。当前 `dataDir` 是写死在 bundle patch 里的，改路径需手动编辑 `cordis.patch.yml` 并重新打包。要做图形设置，需要：给插件加 `Config` schema（schemastery）+ 接入 dsh 的 `configForms`/设置 UI 机制（对纯 JS 第三方插件的完整支持路径尚未完全摸清）。**列为后续工作。**
-
-2. **profile patch 覆盖失效的根因未定位。** 见 3.2 第一条，现象明确但根因未深挖。
-
-3. **版本兼容边界。** 插件声明 `engines.dsh: 0.2.2-rc.3`，是精确版本匹配。dsh 升级到更高版本时需重新核对 API（尤其 `createAssistantMessage` 等 message 构造函数的签名）。
-
-## 8. 测试
-
-```powershell
-cd D:\code\dsh-deep-reading
-npm test                        # node --test test/*.test.js
-python -m unittest discover -s test -p 'test_*.py'
-```
-
-## 9. 备份
-
-原始 0.2.0 文件备份在源码目录（已被 .gitignore 排除，不进入 git）：
-
-- `package.json.bak-0.2.0`
-- `bridge.js.bak-0.2.0`
+Wiki 抽取的固定校验修正阶段最多追加一次带原响应与具体错误的模型请求。JSON、关系与引文继续通过同一 validate_chunk 校验，失败不写分段检查点。该阶段处理跨页脚注等非空白插入时的引文选择问题，不用模糊匹配绕过校验。

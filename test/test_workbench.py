@@ -84,11 +84,12 @@ class WorkbenchTests(unittest.TestCase):
         def broken(*args):
             calls.append(1)
             if len(calls)==2:raise RuntimeError('simulated quota')
-            return {'content':'理论分析与证据。','finish_reason':'stop','reported_model':'test/model'}
+            return {'content':'理论分析与证据。','finish_reason':'stop','reported_model':'test/model','usage':{'inputTokens':17,'outputTokens':8}}
         with patch.object(self.store,'model_call',side_effect=broken):
             with self.assertRaisesRegex(RuntimeError,'simulated quota'):self.store.run_task(self.store.task(task))
         saved=list((self.store.workspace.root/'runs'/f'{task}-0').glob('step-*.json'))
         self.assertEqual(len(saved),1)
+        self.assertEqual(json.loads(saved[0].read_text(encoding='utf-8'))['usage'],{'inputTokens':17,'outputTokens':8})
         resumed=[]
         def answer(*args):
             resumed.append(1)

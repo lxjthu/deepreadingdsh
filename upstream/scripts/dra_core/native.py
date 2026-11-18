@@ -29,7 +29,7 @@ class NativeClient:
         if not response_path.exists(): raise AwaitingNative(pending)
         response=json.loads(response_path.read_text(encoding='utf-8'))
         if response.get('request_id')!=request_id: raise ValueError('Native response request mismatch')
-        return {'content':response['content'],'provider':'native','model':response.get('reported_model'),'model_verification':'host_reported_only' if response.get('reported_model') else 'unavailable','model_evidence':response.get('model_evidence'),'usage':None,'elapsed_seconds':None,'handoff_elapsed_seconds':max(0,response['submitted_at']-json.loads(request_path.read_text(encoding='utf-8'))['created_at']),'finish_reason':response.get('finish_reason','stop'),'truncated':response.get('finish_reason')=='length','attempts':[]}
+        return {'content':response['content'],'provider':'native','model':response.get('reported_model'),'model_verification':'host_reported_only' if response.get('reported_model') else 'unavailable','model_evidence':response.get('model_evidence'),'usage':response.get('usage'),'elapsed_seconds':None,'handoff_elapsed_seconds':max(0,response['submitted_at']-json.loads(request_path.read_text(encoding='utf-8'))['created_at']),'finish_reason':response.get('finish_reason','stop'),'truncated':response.get('finish_reason')=='length','attempts':[]}
 
 
 def advance(workspace, loader, run_id, response_path=None):
@@ -50,7 +50,8 @@ def advance(workspace, loader, run_id, response_path=None):
             if response.get('finish_reason','stop') not in ('stop','length'): raise ValueError('Invalid finish_reason')
             for key in ('reported_model','model_evidence'):
                 if response.get(key) is not None and not isinstance(response[key],str): raise ValueError(key+' must be string or null')
-            response={k:response[k] for k in ('request_id','content','reported_model','model_evidence','finish_reason') if k in response}
+            if response.get('usage') is not None and not isinstance(response['usage'],dict): raise ValueError('usage must be an object or null')
+            response={k:response[k] for k in ('request_id','content','reported_model','model_evidence','finish_reason','usage') if k in response}
             response['submitted_at']=time.time()
             atomic_json(folder/'native/submissions'/(uuid.uuid4().hex+'.json'),response)
             atomic_json(folder/'native/responses'/(pending['request_id']+'.json'),response)

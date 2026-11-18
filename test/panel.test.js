@@ -9,10 +9,10 @@ test('native client contributes matching sidebar and main panel identities', () 
   let module;
   vm.runInNewContext(readFileSync(new URL('../client.js', import.meta.url), 'utf8'), { window: { __ModuleLoader__: { load: spec => { module = spec.factory(() => ({})); } } } });
   const entries=[];
-  module.apply({ slots: { inject: (_, fn) => fn(), register: (spec, component) => { entries.push({spec,component});return ()=>{}; } } });
+  module.apply({ effect:fn=>fn(),locale:{register:()=>()=>{},bind:()=>key=>({title:'文献研究'})[key]},slots: { inject: (_, fn) => fn(), register: (spec, component) => { entries.push({spec,component});return ()=>{}; } } });
   assert.equal(entries.find(e=>e.spec.name==='main').spec.key,'deep-reading');
   assert.equal(entries.find(e=>e.spec.name==='sidebar.panellist').spec.id,'deep-reading');
-  assert.equal(entries.find(e=>e.spec.name==='sidebar.panellist').spec.label,'文献研究');
+  assert.equal(entries.find(e=>e.spec.name==='sidebar.panellist').spec.label(),'文献研究');
 });
 
 test('panel proxy requires dsh admission, hides internal bridge, preserves backend credentials', async t => {

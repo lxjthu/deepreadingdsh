@@ -52,11 +52,21 @@ TASKS = {
 MULTI = {'compare', 'synthesize', 'qa', 'writing-style.batch','references.format', 'library.query_parser', 'library.report_writer', 'library.paper_comment_writer', 'library.tag_target_selector'}
 
 
+def terminate_child(child):
+    """Terminate only an owned OCR process tree, including Windows venv launchers."""
+    if child.poll() is not None: return
+    if os.name=='nt':
+        subprocess.run(['taskkill','/PID',str(child.pid),'/T','/F'],capture_output=True,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0),check=True)
+    else: child.terminate()
+    child.wait()
+
+
 def read_json(path):
     return json.loads(Path(path).read_text(encoding='utf-8-sig'))
 
 
 def pid_alive(pid):
+    if type(pid)!=int or pid<=0: raise ValueError('锁文件中的进程编号无效')
     if os.name=='nt':
         import ctypes
         kernel=ctypes.WinDLL('kernel32',use_last_error=True)
@@ -64,10 +74,15 @@ def pid_alive(pid):
         kernel.CloseHandle.argtypes=[ctypes.c_void_p]
         kernel.GetExitCodeProcess.argtypes=[ctypes.c_void_p,ctypes.POINTER(ctypes.c_ulong)]
         handle=kernel.OpenProcess(0x1000,False,pid)
-        if not handle: return ctypes.get_last_error()==5
+        if not handle:
+            error=ctypes.get_last_error()
+            if error==87: return False
+            if error==5: return True
+            raise ctypes.WinError(error)
         try:
             code=ctypes.c_ulong()
-            return bool(kernel.GetExitCodeProcess(handle,ctypes.byref(code))) and code.value==259
+            if not kernel.GetExitCodeProcess(handle,ctypes.byref(code)): raise ctypes.WinError(ctypes.get_last_error())
+            return code.value==259
         finally: kernel.CloseHandle(handle)
     try: os.kill(pid,0);return True
     except ProcessLookupError:return False
@@ -102,6 +117,10 @@ class Store:
         self.mutex = threading.RLock()
         self.stop = threading.Event()
         self.child = None
+        self.active_task = None
+        self.execution = threading.local()
+        self.active_cancel = None
+        self.accepting = True
         with self.db() as db:
             db.executescript('''
               PRAGMA journal_mode=WAL;
@@ -140,9 +159,13 @@ class Store:
         for row in tasks:
             row['params'] = json.loads(row['params'])
             row['result'] = json.loads(row['result']) if row['result'] else None
+            row['model_calls'] = self.usage(row['id'])
         return {'topics': topics, 'links': links, 'documents': self.workspace.entries(), 'tasks': tasks,
                 'library': [library_entry(e, tasks) for e in self.workspace.entries()],
                 'home': str(self.home), 'capabilities': TASKS}
+
+    def usage(self, task_id):
+        return [{'id':r['id'], 'model':a.get('reported_model'), 'usage':a.get('usage')} for r in self.rows('SELECT id,response FROM calls WHERE task_id=? AND response IS NOT NULL ORDER BY created',(task_id,)) for a in [json.loads(r['response'])]]
 
     def topic(self, topic_id):
         rows = self.rows('SELECT * FROM topics WHERE id=?', (topic_id,))
@@ -169,6 +192,11 @@ class Store:
         return list(dict.fromkeys(ids))
 
     def new_task(self, params):
+        with self.mutex:
+            return self._new_task(params)
+
+    def _new_task(self, params):
+        if not self.accepting: raise ValueError('资料目录正在切换，请稍后重试')
         params = json.loads(json.dumps(params))
         topic_id, task = params.get('topic_id'), params.get('task')
         self.topic(topic_id)
@@ -188,11 +216,20 @@ class Store:
         with self.db() as db:
             db.execute('UPDATE tasks SET '+','.join(k+'=?' for k in fields)+' WHERE id=?', (*fields.values(), task_id))
 
+    def check_cancel(self, task_id):
+        event = getattr(self.execution, 'cancel', None)
+        if self.stop.is_set() or (event and event.is_set()) or self.task(task_id)['status'] == 'cancelled':
+            raise InterruptedError('任务已中断，已完成步骤保留')
+
     def cancel(self, task_id):
-        row = self.task(task_id)
-        if row['status'] == 'completed': raise ValueError('已完成任务不能取消')
-        self.update(task_id, status='cancelled', error='用户取消；已完成步骤保留')
-        if self.child and self.active_task == task_id: self.child.terminate()
+        with self.mutex:
+            row = self.task(task_id)
+            if row['status'] == 'completed': raise ValueError('已完成任务不能取消')
+            if self.active_task == task_id and self.active_cancel: self.active_cancel.set()
+            with self.db() as db:
+                db.execute("UPDATE calls SET status='abandoned' WHERE task_id=? AND status IN ('pending','claimed','answered')", (task_id,))
+                db.execute("UPDATE tasks SET status='cancelled',error=?,updated=? WHERE id=?", ('用户取消；已完成步骤保留',time.time(),task_id))
+            if self.child and self.active_task == task_id: terminate_child(self.child)
         return {'status': 'cancelled'}
 
     def resume(self, task_id):
@@ -204,12 +241,14 @@ class Store:
 
     def model_call(self, task_id, messages):
         call_id = uuid.uuid4().hex
-        with self.db() as db:
+        with self.mutex, self.db() as db:
+            self.check_cancel(task_id)
             db.execute('INSERT INTO calls VALUES(?,?,?,?,?,?,?)', (call_id, task_id, json.dumps({'messages': messages}, ensure_ascii=False), 'pending', None, None, time.time()))
         deadline = time.monotonic()+900
         while not self.stop.wait(.2):
-            if self.task(task_id)['status'] == 'cancelled': raise InterruptedError('任务已取消')
+            self.check_cancel(task_id)
             row = self.rows('SELECT * FROM calls WHERE id=?', (call_id,))[0]
+            if row['status'] == 'abandoned': raise InterruptedError('模型请求已取消')
             if row['status'] == 'answered':
                 answer = json.loads(row['response'])
                 if answer.get('error'): raise RuntimeError(answer.get('code','MODEL_ERROR')+': '+answer['error'])
@@ -307,7 +346,7 @@ class Store:
         previous = json.loads(self.task(task_id)['result'] or '{}')
         results = {r['path']:r for r in previous.get('files', []) if r['status'] != 'failed'}
         for item in manifest:
-            if self.stop.is_set() or self.task(task_id)['status'] == 'cancelled': raise InterruptedError('导入已中断，已完成文件保留')
+            self.check_cancel(task_id)
             if item['path'] in results: continue
             try:
                 result = self.import_file({**params, **item}, task_id)
@@ -369,8 +408,9 @@ class Store:
         for entry in self.workspace.entries():
             if any(s.get('sha256') == sha and s.get('engine') == 'unlimited-ocr-2' for s in entry.get('sources', [])):
                 return {'status': 'duplicate', 'entry_id': entry['entry_id']}
-        config = read_json(self.home/'runtime.json') if (self.home/'runtime.json').exists() else {}
-        ocr_root = Path(config.get('ocrRoot', r'D:\code\paddleocr'))
+        config = {**json.loads(os.environ.get('DSH_READING_MACHINE_SETTINGS','{}')), **(read_json(self.home/'runtime.json') if (self.home/'runtime.json').exists() else {})}
+        if not config.get('ocrRoot'): raise ValueError('请配置本机 ocrRoot 和 ocrPython')
+        ocr_root = Path(config['ocrRoot'])
         python = config.get('ocrPython', str(ocr_root/'Unlimited-OCR-env/Scripts/python.exe'))
         if not Path(python).is_file(): raise ValueError('本机 Unlimited OCR 二代环境不存在，请配置 runtime.json 中的 ocrPython/ocrRoot')
         cache = self.workspace.path('ocr/'+sha)
@@ -489,14 +529,22 @@ class Store:
                 row=tasks[0]
                 self.update(row['id'],status='running')
                 self.active_task=row['id']
+                self.active_cancel=threading.Event()
+                self.execution.cancel=self.active_cancel
             try:
                 result=self.run_task(row)
-                if self.task(row['id'])['status']!='cancelled': self.update(row['id'],status='completed',result=json.dumps(result,ensure_ascii=False),error=None)
+                result['model_calls']=self.usage(row['id'])
+                with self.mutex:
+                    if not self.execution.cancel.is_set(): self.update(row['id'],status='completed',result=json.dumps(result,ensure_ascii=False),error=None)
             except Exception as exc:
-                if self.task(row['id'])['status']!='cancelled': self.update(row['id'],status='interrupted' if self.stop.is_set() else 'failed',error=str(exc))
+                with self.mutex:
+                    if not self.execution.cancel.is_set(): self.update(row['id'],status='interrupted' if self.stop.is_set() else 'failed',error=str(exc))
             finally:
                 with self.db() as db: db.execute("UPDATE calls SET status='abandoned' WHERE task_id=? AND status IN ('pending','claimed')",(row['id'],))
-                self.active_task=None
+                with self.mutex:
+                    self.active_task=None
+                    self.active_cancel=None
+                    del self.execution.cancel
 
     def backup(self):
         with self.mutex:
@@ -518,12 +566,14 @@ class Store:
 class BridgeClient(NativeClient):
     def __init__(self,store,task_id): self.store,self.task_id=store,task_id
     def complete(self,messages):
-        if self.store.task(self.task_id)['status']=='cancelled': raise InterruptedError('任务已取消')
+        self.store.check_cancel(self.task_id)
         try: return super().complete(messages)
         except AwaitingNative as pending:
             answer=self.store.model_call(self.task_id,messages)
             answer.update(request_id=pending.request['request_id'], submitted_at=time.time(),model_evidence='dsh ctx.llm stream')
-            atomic_json(self.folder/'native/responses'/(pending.request['request_id']+'.json'),answer)
+            with self.store.mutex:
+                self.store.check_cancel(self.task_id)
+                atomic_json(self.folder/'native/responses'/(pending.request['request_id']+'.json'),answer)
             return super().complete(messages)
 
 
@@ -594,8 +644,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json({'slot':slot,'text':(override if override.exists() else path).read_text(encoding='utf-8-sig')})
             if route=='/bridge/next': return self.send_json(store.next_call())
             if route=='/bridge/status':
-                calls=store.rows('SELECT task_id FROM calls WHERE id=?',(query['id'][0],))
-                return self.send_json({'cancelled':not calls or store.task(calls[0]['task_id'])['status']!='running'})
+                calls=store.rows('SELECT task_id,status FROM calls WHERE id=?',(query['id'][0],))
+                return self.send_json({'cancelled':not calls or calls[0]['status']!='claimed' or store.task(calls[0]['task_id'])['status']!='running'})
             if route=='/api/file':
                 path=(store.home/query['path'][0]).resolve()
                 if not path.is_relative_to(store.home) or not path.is_file() or not (path.is_relative_to(store.workspace.root) or path.is_relative_to(store.home/'backups')): raise ValueError('Invalid artifact path')
@@ -617,7 +667,12 @@ class Handler(BaseHTTPRequestHandler):
             body=json.loads(self.rfile.read(size))
             route=urlsplit(self.path).path
             store=self.server.store
-            if route=='/api/topics': result=store.create_topic(body.get('name'),body.get('description',''))
+            if route=='/bridge/prepare-switch':
+                with store.mutex:
+                    if store.active_task or store.rows("SELECT id FROM tasks WHERE status IN ('running','queued')"): raise ValueError('请先结束运行或排队任务再切换资料目录')
+                    store.accepting=False
+                result={'ready':True}
+            elif route=='/api/topics': result=store.create_topic(body.get('name'),body.get('description',''))
             elif route=='/api/link': result=store.link(body['topic_id'],body['entry_id'])
             elif route=='/api/import': result=store.new_task({**body,'task':'import'})
             elif route=='/api/library': result=store.update_library(body)
@@ -659,7 +714,7 @@ class Handler(BaseHTTPRequestHandler):
             elif route=='/bridge/respond': result=store.answer_call(body)
             elif route=='/bridge/shutdown':
                 store.stop.set()
-                if store.child: store.child.terminate()
+                if store.child: terminate_child(store.child)
                 threading.Thread(target=self.server.shutdown,daemon=True).start()
                 result={'stopping':True}
             else: return self.send_json({'error':'Not found'},404)
@@ -673,26 +728,68 @@ def serve(args):
     server=ThreadingHTTPServer(('127.0.0.1',args.port),Handler)
     server.store,server.token=store,args.token
     server.base=f'http://127.0.0.1:{server.server_address[1]}'
-    threading.Thread(target=store.worker,daemon=True).start()
+    worker=threading.Thread(target=store.worker)
+    worker.start()
     print(json.dumps({'event':'ready','url':server.base}),flush=True)
     try: server.serve_forever()
     finally:
         store.stop.set()
-        if store.child: store.child.terminate()
+        if store.child: terminate_child(store.child)
+        worker.join()
         server.server_close()
+
+
+def validate_home(value):
+    """Validate without constructing Store or changing existing research files."""
+    path=Path(value)
+    if not path.is_absolute(): raise ValueError('请选择完整的绝对路径')
+    path=path.resolve()
+    if path.exists() and not path.is_dir(): raise ValueError('所选路径不是文件夹')
+    if path.exists():
+        lock=path/'.service.lock'
+        if lock.exists():
+            try: pid=int(lock.read_text())
+            except (OSError,ValueError): raise ValueError('锁文件不完整，请确认旧进程结束后检查')
+            if pid_alive(pid): raise ValueError('资料目录正被其他实例使用，请先关闭该实例或选择其他目录')
+        items=set(x.name for x in path.iterdir())- {'.service.lock'}
+        if items:
+            database=path/'topics.sqlite3'
+            if not database.is_file(): raise ValueError('非空目录不是有效资料库，请选择空目录或已有资料库')
+            with closing(sqlite3.connect(database.as_uri()+'?mode=ro',uri=True)) as db:
+                if db.execute('PRAGMA user_version').fetchone()[0]!=1: raise ValueError('资料库版本不兼容')
+                if db.execute('PRAGMA integrity_check').fetchone()[0]!='ok': raise ValueError('资料库损坏')
+                for table,columns in {'topics':{'id','name','description','created'},'topic_documents':{'topic_id','entry_id'},'tasks':{'id','topic_id','task','params','status','result','error','created','updated'},'calls':{'id','task_id','payload','status','response','lease','created'}}.items():
+                    if not columns.issubset({r[1] for r in db.execute('PRAGMA table_info('+table+')')}): raise ValueError('资料库格式不兼容：'+table)
+                if db.execute("SELECT 1 FROM sqlite_master WHERE name='wiki_meta'").fetchone() and db.execute('SELECT version FROM wiki_meta').fetchone()[0]!=1: raise ValueError('Wiki 版本不兼容')
+            if read_json(path/'workspace/workspace.json').get('schema_version')!=1: raise ValueError('工作区版本不兼容')
+            entries=read_json(path/'workspace/library/index.json').get('entries')
+            if not isinstance(entries,list): raise ValueError('文献索引损坏')
+            if (path/'runtime.json').exists() and not isinstance(read_json(path/'runtime.json'),dict): raise ValueError('运行配置损坏')
+    empty=not path.exists() or not (path/'topics.sqlite3').exists()
+    path.mkdir(parents=True,exist_ok=True)
+    probe=path/('.write-probe-'+uuid.uuid4().hex)
+    try:
+        with probe.open('x',encoding='utf-8') as file: file.write('probe')
+    finally: probe.unlink(missing_ok=True)
+    return {'home':str(path),'empty':empty}
 
 
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--home',required=True)
+    parser.add_argument('--validate-home',action='store_true')
     parser.add_argument('--token')
     parser.add_argument('--port',type=int,default=0)
     parser.add_argument('--restore')
     args=parser.parse_args()
+    if args.validate_home:
+        print(json.dumps(validate_home(args.home),ensure_ascii=False))
+        return
     if args.restore:
         print(json.dumps(restore_archive(args.restore,args.home)))
         return
     if not args.token: parser.error('--token required')
+    validate_home(args.home)
     with instance_lock(args.home):serve(args)
 
 

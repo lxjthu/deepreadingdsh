@@ -1,0 +1,1391 @@
+[
+  {
+    "id": "dsh-deep-reading@0.1.1",
+    "name": "dsh-deep-reading",
+    "version": "0.1.1",
+    "size": 1092196,
+    "unpackedSize": 2207672,
+    "shasum": "c460b437bb425fad3afe91bee068f1b5b3f5d21d",
+    "integrity": "sha512-8+206Gk/VJT7sd3ur275xJZKOa1h8rLAu67UnBqVKxqrQTxfxcDAso5DfpwBXrWHIYM0E0zAc/kvLIWFY3DQLA==",
+    "filename": "dsh-deep-reading-0.1.1.tgz",
+    "files": [
+      {
+        "path": "LICENSE",
+        "size": 11357,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 4914,
+        "mode": 420
+      },
+      {
+        "path": "THIRD_PARTY.md",
+        "size": 1027,
+        "mode": 420
+      },
+      {
+        "path": "bridge.js",
+        "size": 1510,
+        "mode": 420
+      },
+      {
+        "path": "cordis.patch.yml",
+        "size": 62,
+        "mode": 420
+      },
+      {
+        "path": "index.js",
+        "size": 5771,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 924,
+        "mode": 420
+      },
+      {
+        "path": "scripts/client.mjs",
+        "size": 805,
+        "mode": 420
+      },
+      {
+        "path": "scripts/idea_lab.py",
+        "size": 11928,
+        "mode": 420
+      },
+      {
+        "path": "scripts/ocr_worker.py",
+        "size": 3823,
+        "mode": 420
+      },
+      {
+        "path": "scripts/server.py",
+        "size": 33441,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/capabilities.json",
+        "size": 106329,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/dimensions/default.json",
+        "size": 3188,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/compare.css",
+        "size": 25156,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_AMS-Regular.ttf",
+        "size": 63632,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_AMS-Regular.woff",
+        "size": 33516,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_AMS-Regular.woff2",
+        "size": 28076,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Caligraphic-Bold.ttf",
+        "size": 12368,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Caligraphic-Bold.woff",
+        "size": 7716,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Caligraphic-Bold.woff2",
+        "size": 6912,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Caligraphic-Regular.ttf",
+        "size": 12344,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Caligraphic-Regular.woff",
+        "size": 7656,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Caligraphic-Regular.woff2",
+        "size": 6908,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Fraktur-Bold.ttf",
+        "size": 19584,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Fraktur-Bold.woff",
+        "size": 13296,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Fraktur-Bold.woff2",
+        "size": 11348,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Fraktur-Regular.ttf",
+        "size": 19572,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Fraktur-Regular.woff",
+        "size": 13208,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Fraktur-Regular.woff2",
+        "size": 11316,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-Bold.ttf",
+        "size": 51336,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-Bold.woff",
+        "size": 29912,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-Bold.woff2",
+        "size": 25324,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-BoldItalic.ttf",
+        "size": 32968,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-BoldItalic.woff",
+        "size": 19412,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-BoldItalic.woff2",
+        "size": 16780,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-Italic.ttf",
+        "size": 33580,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-Italic.woff",
+        "size": 19676,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-Italic.woff2",
+        "size": 16988,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-Regular.ttf",
+        "size": 53580,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-Regular.woff",
+        "size": 30772,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Main-Regular.woff2",
+        "size": 26272,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Math-BoldItalic.ttf",
+        "size": 31196,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Math-BoldItalic.woff",
+        "size": 18668,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Math-BoldItalic.woff2",
+        "size": 16400,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Math-Italic.ttf",
+        "size": 31308,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Math-Italic.woff",
+        "size": 18748,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Math-Italic.woff2",
+        "size": 16440,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_SansSerif-Bold.ttf",
+        "size": 24504,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_SansSerif-Bold.woff",
+        "size": 14408,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_SansSerif-Bold.woff2",
+        "size": 12216,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_SansSerif-Italic.ttf",
+        "size": 22364,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_SansSerif-Italic.woff",
+        "size": 14112,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_SansSerif-Italic.woff2",
+        "size": 12028,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_SansSerif-Regular.ttf",
+        "size": 19436,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_SansSerif-Regular.woff",
+        "size": 12316,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_SansSerif-Regular.woff2",
+        "size": 10344,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Script-Regular.ttf",
+        "size": 16648,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Script-Regular.woff",
+        "size": 10588,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Script-Regular.woff2",
+        "size": 9644,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size1-Regular.ttf",
+        "size": 12228,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size1-Regular.woff",
+        "size": 6496,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size1-Regular.woff2",
+        "size": 5468,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size2-Regular.ttf",
+        "size": 11508,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size2-Regular.woff",
+        "size": 6188,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size2-Regular.woff2",
+        "size": 5208,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size3-Regular.ttf",
+        "size": 7588,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size3-Regular.woff",
+        "size": 4420,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size3-Regular.woff2",
+        "size": 3624,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size4-Regular.ttf",
+        "size": 10364,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size4-Regular.woff",
+        "size": 5980,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Size4-Regular.woff2",
+        "size": 4928,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Typewriter-Regular.ttf",
+        "size": 27556,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Typewriter-Regular.woff",
+        "size": 16028,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/fonts/KaTeX_Typewriter-Regular.woff2",
+        "size": 13568,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/katex.min.css",
+        "size": 23352,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/katex.min.js",
+        "size": 276701,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/katex/LICENSE",
+        "size": 1107,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/reader.css",
+        "size": 10163,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reader/reader.js",
+        "size": 3878,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/reproduction/tfp_lp.do",
+        "size": 2555,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/source_inventory.json",
+        "size": 107316,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/website-schema.json",
+        "size": 4763,
+        "mode": 420
+      },
+      {
+        "path": "upstream/assets/workflows.json",
+        "size": 24718,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/ai_template/meta_prompt.md",
+        "size": 2807,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/ai_template/system_role.md",
+        "size": 209,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/card_note/atomic_card_writer_user.md",
+        "size": 379,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/card_note/atomic_card_writer.md",
+        "size": 697,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/catalog.json",
+        "size": 67704,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/abstract_translator/_system_prompt.md",
+        "size": 238,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/ai_template_generator/meta_prompt_default.md",
+        "size": 2799,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/ai_template_generator/system_role_default.md",
+        "size": 207,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/compare/synthesis_system_prompt_default.md",
+        "size": 699,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/compare/system_prompt_default.md",
+        "size": 514,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/conversation_engine/system_prompt.md",
+        "size": 911,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/deepseek_refs/prompt_cite.md",
+        "size": 1299,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/deepseek_refs/prompt_extract.md",
+        "size": 1977,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/dimensions/inline_936.md",
+        "size": 242,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/history/inline_216.md",
+        "size": 821,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/metadata_extractor/inline_30.md",
+        "size": 321,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/pdf_metadata_llm/prompt.md",
+        "size": 1164,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/reading_source_evidence/inline_13.md",
+        "size": 764,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/ref_format_service/analyze_prompt.md",
+        "size": 630,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/ref_format_service/generate_prompt.md",
+        "size": 577,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/research_agent_runtime/inline_1143.md",
+        "size": 496,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/research_idea_lab/inline_114.md",
+        "size": 79,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/source_qa/answer_format.md",
+        "size": 729,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/source_qa/source_guard.md",
+        "size": 3281,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/source_qa/verify_format.md",
+        "size": 2598,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/translation_pipeline/_detect_prompt.md",
+        "size": 502,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/translation_pipeline/glossary_system.md",
+        "size": 255,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/translation_pipeline/glossary_user_tmpl.md",
+        "size": 982,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/translation_pipeline/pdf_fulltext_glossary_system.md",
+        "size": 225,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/translation_pipeline/pdf_fulltext_glossary_user_tmpl.md",
+        "size": 839,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/translation_pipeline/pdf_fulltext_restate_system.md",
+        "size": 186,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/translation_pipeline/pdf_fulltext_restate_user_tmpl.md",
+        "size": 1149,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/translation_pipeline/restate_system.md",
+        "size": 198,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/code/translation_pipeline/restate_user_tmpl.md",
+        "size": 1309,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/compare/ai_summary.md",
+        "size": 354,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/contributions_limitations.md",
+        "size": 134,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/custom.md",
+        "size": 36,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/data_source.md",
+        "size": 115,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/external_validity.md",
+        "size": 118,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/identification_assumptions.md",
+        "size": 127,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/mechanism.md",
+        "size": 109,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/methodology.md",
+        "size": 139,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/overview.md",
+        "size": 130,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/results.md",
+        "size": 133,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/robustness.md",
+        "size": 115,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/theory.md",
+        "size": 130,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/variable_measurement.md",
+        "size": 106,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension_questions/writing_quality.md",
+        "size": 97,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/contributions_limitations.md",
+        "size": 33,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/custom.md",
+        "size": 66,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/data_source.md",
+        "size": 48,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/external_validity.md",
+        "size": 51,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/identification_assumptions.md",
+        "size": 54,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/mechanism.md",
+        "size": 48,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/methodology.md",
+        "size": 54,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/overview.md",
+        "size": 51,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/results.md",
+        "size": 45,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/robustness.md",
+        "size": 51,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/theory.md",
+        "size": 51,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/variable_measurement.md",
+        "size": 48,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/dimension/writing_quality.md",
+        "size": 42,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/filter/empiricist.md",
+        "size": 2492,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/filter/explorer.md",
+        "size": 3335,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/filter/reviewer.md",
+        "size": 2555,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/journal_kb/top_tier_registry.md",
+        "size": 1346,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/library_chat/paper_comment_writer.md",
+        "size": 1321,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/library_chat/query_parser.md",
+        "size": 1910,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/library_chat/report_writer.md",
+        "size": 1224,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/library_chat/source_followup_answer.md",
+        "size": 1849,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/library_chat/source_followup_query.md",
+        "size": 523,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/library_chat/source_followup_verify.md",
+        "size": 1804,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/library_chat/tag_target_selector.md",
+        "size": 1398,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/contributions_limitations.md",
+        "size": 280,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/custom.md",
+        "size": 208,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/data_source.md",
+        "size": 264,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/external_validity.md",
+        "size": 237,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/identification_assumptions.md",
+        "size": 234,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/mechanism.md",
+        "size": 225,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/methodology.md",
+        "size": 405,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/overview.md",
+        "size": 272,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/results.md",
+        "size": 249,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/robustness.md",
+        "size": 228,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/theory.md",
+        "size": 273,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/variable_measurement.md",
+        "size": 255,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/long/writing_quality.md",
+        "size": 243,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/markdown_cleanup/cleanup_boundaries.md",
+        "size": 1555,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/markdown_cleanup/cleanup_headings.md",
+        "size": 1357,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/markdown_cleanup/cleanup_verify.md",
+        "size": 880,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/qa/fixed_priority.md",
+        "size": 42,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/qual/L1.md",
+        "size": 3602,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/qual/L2.md",
+        "size": 2369,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/qual/L3.md",
+        "size": 5576,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/qual/L4.md",
+        "size": 2426,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/quant/step_1.md",
+        "size": 941,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/quant/step_2.md",
+        "size": 1427,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/quant/step_3.md",
+        "size": 952,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/quant/step_4.md",
+        "size": 1280,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/quant/step_5.md",
+        "size": 1071,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/quant/step_6.md",
+        "size": 759,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/quant/step_7.md",
+        "size": 589,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/reading/evidence.md",
+        "size": 793,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/ref_format/analyze_prompt.md",
+        "size": 615,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/ref_format/generate_prompt.md",
+        "size": 514,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/synthesis/compare_system_role.md",
+        "size": 516,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/synthesis/cross_dim_prompt.md",
+        "size": 909,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/synthesis/dimension_prompt.md",
+        "size": 796,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/synthesis/long_multi_prompt.md",
+        "size": 564,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/synthesis/long_single_prompt.md",
+        "size": 710,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/synthesis/multi_prompt.md",
+        "size": 799,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/synthesis/secondary_ref_check.md",
+        "size": 470,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/synthesis/single_prompt.md",
+        "size": 921,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/synthesis/system_role.md",
+        "size": 699,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/analyze_reading_candidates.md",
+        "size": 155,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/analyze_writing_style.md",
+        "size": 168,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/count_library.md",
+        "size": 165,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/diagnose_research_gaps.md",
+        "size": 139,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/extract_research_constructs.md",
+        "size": 159,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/filter_analysis_cache.md",
+        "size": 177,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/generate_research_ideas.md",
+        "size": 187,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/get_entry_detail.md",
+        "size": 84,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/get_evidence_pack.md",
+        "size": 76,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/get_job_status.md",
+        "size": 61,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/get_reading_context.md",
+        "size": 108,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/get_source_windows.md",
+        "size": 84,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/import_folder_and_start_reading.md",
+        "size": 186,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/lookup_english_fulltext.md",
+        "size": 185,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/research_search.md",
+        "size": 182,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/scan_input_folder.md",
+        "size": 297,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/search_cnki.md",
+        "size": 162,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/search_library.md",
+        "size": 173,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/start_batch_reading.md",
+        "size": 41,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/tool/start_reading.md",
+        "size": 95,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/translation/abstract_user.md",
+        "size": 44,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/translation/glossary.md",
+        "size": 1297,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/translation/restate.md",
+        "size": 1565,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/unregistered/prompts/writing_style/comparative_synthesizer.md",
+        "size": 295,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/unregistered/prompts/writing_style/imitation_advisor.md",
+        "size": 370,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/unregistered/prompts/writing_style/report_writer.md",
+        "size": 404,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/unregistered/prompts/writing_style/section_analyzer.md",
+        "size": 467,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/writing_style/batch_comparative_synthesizer.md",
+        "size": 666,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/writing_style/batch_imitation_advisor.md",
+        "size": 701,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/writing_style/batch_report_writer.md",
+        "size": 699,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/writing_style/batch_section_analyzer.md",
+        "size": 823,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/writing_style/single_fulltext_analyzer.md",
+        "size": 880,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/writing_style/single_imitation_advisor.md",
+        "size": 714,
+        "mode": 420
+      },
+      {
+        "path": "upstream/prompts/writing_style/single_report_writer.md",
+        "size": 678,
+        "mode": 420
+      },
+      {
+        "path": "upstream/README.md",
+        "size": 25467,
+        "mode": 420
+      },
+      {
+        "path": "upstream/references/comparison.md",
+        "size": 1386,
+        "mode": 420
+      },
+      {
+        "path": "upstream/references/configuration.md",
+        "size": 1329,
+        "mode": 420
+      },
+      {
+        "path": "upstream/references/inputs-outputs.md",
+        "size": 1461,
+        "mode": 420
+      },
+      {
+        "path": "upstream/references/markdown-cleanup.md",
+        "size": 4757,
+        "mode": 420
+      },
+      {
+        "path": "upstream/references/native.md",
+        "size": 2398,
+        "mode": 420
+      },
+      {
+        "path": "upstream/references/online.md",
+        "size": 1212,
+        "mode": 420
+      },
+      {
+        "path": "upstream/references/reader.md",
+        "size": 5802,
+        "mode": 420
+      },
+      {
+        "path": "upstream/references/reproduction.md",
+        "size": 6888,
+        "mode": 420
+      },
+      {
+        "path": "upstream/references/variables-and-methods.md",
+        "size": 3427,
+        "mode": 420
+      },
+      {
+        "path": "upstream/references/workflows.md",
+        "size": 4209,
+        "mode": 420
+      },
+      {
+        "path": "upstream/requirements.txt",
+        "size": 103,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/acceptance.py",
+        "size": 5237,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/blind_review.py",
+        "size": 3404,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/__init__.py",
+        "size": 70,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/batch.py",
+        "size": 1605,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/cli.py",
+        "size": 26755,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/connectors.py",
+        "size": 2685,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/dimensions.py",
+        "size": 2067,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/io_services.py",
+        "size": 12084,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/jobs.py",
+        "size": 3714,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/llm.py",
+        "size": 5568,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/markdown_cleanup.py",
+        "size": 15521,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/mineru_adapter.py",
+        "size": 2861,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/native.py",
+        "size": 4405,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/ocr_guidance.py",
+        "size": 1807,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/pipeline.py",
+        "size": 25113,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/portability.py",
+        "size": 10899,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/prompt_loader.py",
+        "size": 3059,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/quality.py",
+        "size": 2528,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/reader_compare.py",
+        "size": 5982,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/reader_render.py",
+        "size": 4567,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/reader.py",
+        "size": 18313,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/research.py",
+        "size": 10036,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/source_versions.py",
+        "size": 17314,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra_core/workspace.py",
+        "size": 3375,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/dra.py",
+        "size": 110,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/live_acceptance.py",
+        "size": 2611,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/mineru_worker.py",
+        "size": 4820,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/quality_audit.py",
+        "size": 1516,
+        "mode": 420
+      },
+      {
+        "path": "upstream/scripts/reproduce.py",
+        "size": 9911,
+        "mode": 420
+      },
+      {
+        "path": "upstream/SKILL.md",
+        "size": 4093,
+        "mode": 420
+      },
+      {
+        "path": "upstream/THIRD_PARTY.md",
+        "size": 1051,
+        "mode": 420
+      },
+      {
+        "path": "web/app.js",
+        "size": 11722,
+        "mode": 420
+      },
+      {
+        "path": "web/index.html",
+        "size": 6914,
+        "mode": 420
+      },
+      {
+        "path": "web/style.css",
+        "size": 7135,
+        "mode": 420
+      }
+    ],
+    "entryCount": 275,
+    "bundled": []
+  }
+]

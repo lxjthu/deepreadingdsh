@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-12",
+  "status": "passed_with_defined_coverage",
+  "package": "dsh-deep-reading-0.2.1.tgz",
+  "sha256": "b065aec8032e1942b01fabc273258ec587d6142c0c3f67c02e5cc2f3a597935d",
+  "python_tests": 10,
+  "node_tests": 4,
+  "workflow_prompt_binding_checks": 25,
+  "browser": {
+    "status": "passed",
+    "page_errors": [],
+    "checks": [
+      "topic creation",
+      "file upload",
+      "task list",
+      "idea lab navigation",
+      "prompt resource load",
+      "custom dimension import",
+      "formatted result view",
+      "desktop and mobile render"
+    ]
+  },
+  "live_tasks": {
+    "ocr_import": "completed",
+    "second_import": "completed",
+    "read.quant": "completed",
+    "references.extract": "completed",
+    "qa": "completed",
+    "compare": "completed",
+    "idea-lab": "completed",
+    "idea-lab.deepen": "completed",
+    "packaged_read_long": "completed"
+  },
+  "model_route": "deepseek-official/deepseek-flash",
+  "verified_quant_source_quotes": 35,
+  "ocr": "One-page raster PDF generated from a self-authored synthetic research note; actual local Unlimited OCR 2 inference",
+  "installation": "v0.2.1 installed in daily web and isolated reading-test profiles; native sidebar and data preservation verified.",
+  "remaining_limits": [
+    "Not every workflow has had a real-model accuracy evaluation.",
+    "OCR acceptance here covers one synthetic page, not a long-document accuracy benchmark."
+  ],
+  "original_system": "Original website, production database and OCR environments unchanged",
+  "native_sidebar": {
+    "status": "passed",
+    "checks": [
+      "native sidebar entry",
+      "same-origin embedded main panel",
+      "topic creation and upload via prior browser run",
+      "evidence idea lab",
+      "panel switching retains selected topic",
+      "completed real model task launched through native panel",
+      "formatted model result",
+      "unauthenticated and foreign-origin requests rejected",
+      "internal bridge inaccessible"
+    ],
+    "model_task_id": "58e12090d4a34792b07e22424731010a",
+    "model_task_status": "completed",
+    "page_errors": [],
+    "timing_note": "Real inference exceeded the first 120-second browser assertion; completed state and rendered artifact were subsequently verified without repeating inference."
+  },
+  "daily_upgrade": {
+    "status": "passed",
+    "data_preserved": true,
+    "topic_count": 1,
+    "document_count": 0,
+    "task_count": 0,
+    "version": "0.2.1"
+  }
+}

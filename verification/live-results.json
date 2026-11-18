@@ -1,0 +1,1526 @@
+{
+  "model_route": "deepseek-official/deepseek-flash",
+  "material": "self-authored synthetic methods note, not empirical evidence",
+  "topic_id": "dcc23cd81a5141bba1235997467830b4",
+  "ocr_import": {
+    "id": "db973762d99947b3939e73ad107ecc49",
+    "topic_id": "dcc23cd81a5141bba1235997467830b4",
+    "task": "import",
+    "params": {
+      "topic_id": "dcc23cd81a5141bba1235997467830b4",
+      "path": "D:\\code\\dsh-deep-reading\\verification\\inputs\\synthetic-scanned-paper.pdf",
+      "engine": "unlimited",
+      "task": "import"
+    },
+    "status": "completed",
+    "result": {
+      "status": "completed",
+      "entry_id": "paper-9ec14085e50da570b847",
+      "pages": 1,
+      "engine": "unlimited-ocr-2",
+      "entry_ids": [
+        "paper-9ec14085e50da570b847"
+      ]
+    },
+    "error": null,
+    "created": 1794449066.938531,
+    "updated": 1794449124.5080636
+  },
+  "second_import": {
+    "id": "de73bddb7f1b47c496e1e0b8c972bbb0",
+    "topic_id": "dcc23cd81a5141bba1235997467830b4",
+    "task": "import",
+    "params": {
+      "topic_id": "dcc23cd81a5141bba1235997467830b4",
+      "path": "D:\\code\\dsh-deep-reading\\verification\\inputs\\synthetic-second.md",
+      "task": "import"
+    },
+    "status": "completed",
+    "result": {
+      "status": "completed",
+      "entry_id": "paper-8e57af4df588e27138b1",
+      "warnings": [],
+      "association": "new_entry",
+      "candidates": [
+        {
+          "record_index": 0,
+          "title": "synthetic-scanned-paper",
+          "score": 0.6667,
+          "basis": "filename_title_similarity",
+          "adopted": false
+        }
+      ],
+      "entry_ids": [
+        "paper-8e57af4df588e27138b1"
+      ]
+    },
+    "error": null,
+    "created": 1794449125.6095042,
+    "updated": 1794449125.8050187
+  },
+  "read.quant": {
+    "id": "697fa6a476324e2982bc89d94581036f",
+    "topic_id": "dcc23cd81a5141bba1235997467830b4",
+    "task": "read.quant",
+    "params": {
+      "topic_id": "dcc23cd81a5141bba1235997467830b4",
+      "task": "read.quant",
+      "entry_ids": [
+        "paper-9ec14085e50da570b847"
+      ],
+      "question": "明确这是合成材料；未估计结果不得写成实证结论。"
+    },
+    "status": "completed",
+    "result": {
+      "artifacts": [
+        {
+          "path": "artifacts\\paper-9ec14085e50da570b847\\read-quant-1794449398810915300-d20928.md",
+          "sha256": "c1633a6fb2297772b460b70cd904a398056a79a47f535389fe34555650b5e4c7",
+          "origin": "ai",
+          "kind": "read-quant"
+        }
+      ],
+      "runs": [
+        {
+          "run_id": "697fa6a476324e2982bc89d94581036f-0",
+          "status": "completed",
+          "task": "read.quant",
+          "fingerprint": "35841a188e0de06c09293d46e68f009034a9767b8caae3ed8381b655a43c2de8",
+          "model": {
+            "provider": "native",
+            "model": null,
+            "execution": "host_agent",
+            "model_verification": "host_reported_only"
+          },
+          "artifacts": [
+            {
+              "path": "artifacts\\paper-9ec14085e50da570b847\\read-quant-1794449398810915300-d20928.md",
+              "sha256": "c1633a6fb2297772b460b70cd904a398056a79a47f535389fe34555650b5e4c7",
+              "origin": "ai",
+              "kind": "read-quant"
+            }
+          ],
+          "warnings": [],
+          "completed_steps": [
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4",
+            "step_5",
+            "step_6",
+            "step_7"
+          ],
+          "quality_status": "requires_source_and_user_review"
+        }
+      ]
+    },
+    "error": null,
+    "created": 1794449127.826619,
+    "updated": 1794449398.8341942
+  },
+  "references.extract": {
+    "id": "61326d0666c344699fc89114a5784d12",
+    "topic_id": "dcc23cd81a5141bba1235997467830b4",
+    "task": "references.extract",
+    "params": {
+      "topic_id": "dcc23cd81a5141bba1235997467830b4",
+      "task": "references.extract",
+      "entry_ids": [
+        "paper-9ec14085e50da570b847"
+      ],
+      "question": "提取材料明确列出的参考文献。"
+    },
+    "status": "completed",
+    "result": {
+      "artifacts": [
+        {
+          "path": "artifacts\\paper-9ec14085e50da570b847\\references-extract-1794449403714794800-9588d8.md",
+          "sha256": "045843ddb2163b88cf16a1036b53eac3fbb7d29cd243b4746aad76df46190fd9",
+          "origin": "ai",
+          "kind": "references-extract"
+        }
+      ],
+      "runs": [
+        {
+          "run_id": "61326d0666c344699fc89114a5784d12-0",
+          "status": "completed",
+          "task": "references.extract",
+          "fingerprint": "998d62dd30e266b1ab02e89e3e14002133d43daac30ea33dd9a8a7c8799ccd7f",
+          "model": {
+            "provider": "native",
+            "model": null,
+            "execution": "host_agent",
+            "model_verification": "host_reported_only"
+          },
+          "artifacts": [
+            {
+              "path": "artifacts\\paper-9ec14085e50da570b847\\references-extract-1794449403714794800-9588d8.md",
+              "sha256": "045843ddb2163b88cf16a1036b53eac3fbb7d29cd243b4746aad76df46190fd9",
+              "origin": "ai",
+              "kind": "references-extract"
+            }
+          ],
+          "warnings": [],
+          "completed_steps": [
+            "references"
+          ],
+          "quality_status": "requires_source_and_user_review"
+        }
+      ]
+    },
+    "error": null,
+    "created": 1794449400.5581386,
+    "updated": 1794449403.7320678
+  },
+  "qa": {
+    "id": "ac499567b3aa4e5791eff97ea43009a1",
+    "topic_id": "dcc23cd81a5141bba1235997467830b4",
+    "task": "qa",
+    "params": {
+      "topic_id": "dcc23cd81a5141bba1235997467830b4",
+      "task": "qa",
+      "entry_ids": [
+        "paper-9ec14085e50da570b847"
+      ],
+      "question": "本文采用了哪些识别方法？是否已经建立因果关系？"
+    },
+    "status": "completed",
+    "result": {
+      "artifacts": [
+        {
+          "path": "artifacts\\paper-9ec14085e50da570b847\\qa-1794449415184070800-63623b.md",
+          "sha256": "efb9d4a20fd6336fe9a6586dd05bc526a91dc01e336d4f93968cddc5116b78a7",
+          "origin": "ai",
+          "kind": "qa"
+        }
+      ],
+      "runs": [
+        {
+          "run_id": "ac499567b3aa4e5791eff97ea43009a1-0",
+          "status": "completed",
+          "task": "qa",
+          "fingerprint": "d98878a31ebbeb2b5a690960bbfd3cdf025b6f01162ec6c2a59589af3359d004",
+          "model": {
+            "provider": "native",
+            "model": null,
+            "execution": "host_agent",
+            "model_verification": "host_reported_only"
+          },
+          "artifacts": [
+            {
+              "path": "artifacts\\paper-9ec14085e50da570b847\\qa-1794449415184070800-63623b.md",
+              "sha256": "efb9d4a20fd6336fe9a6586dd05bc526a91dc01e336d4f93968cddc5116b78a7",
+              "origin": "ai",
+              "kind": "qa"
+            }
+          ],
+          "warnings": [],
+          "completed_steps": [
+            "answer",
+            "verify"
+          ],
+          "quality_status": "requires_source_and_user_review"
+        }
+      ]
+    },
+    "error": null,
+    "created": 1794449404.627349,
+    "updated": 1794449415.2024133
+  },
+  "compare": {
+    "id": "6ce286dbcc09487a9f5668a20fca50d4",
+    "topic_id": "dcc23cd81a5141bba1235997467830b4",
+    "task": "compare",
+    "params": {
+      "topic_id": "dcc23cd81a5141bba1235997467830b4",
+      "task": "compare",
+      "entry_ids": [
+        "paper-9ec14085e50da570b847",
+        "paper-8e57af4df588e27138b1"
+      ],
+      "question": "对比变量测量、机制与识别局限。"
+    },
+    "status": "completed",
+    "result": {
+      "artifacts": [
+        {
+          "path": "artifacts\\collection\\compare-1794449440807573000-df67c5.md",
+          "sha256": "80d7ff487f816a85be2832a7edb1620cc25ee683b4ed2fd964b43c3429500bf5",
+          "origin": "ai",
+          "kind": "compare"
+        }
+      ],
+      "runs": [
+        {
+          "run_id": "6ce286dbcc09487a9f5668a20fca50d4-0",
+          "status": "completed",
+          "task": "compare",
+          "fingerprint": "b58dccd65b717900c0a40a051c47c1222a7a1c1cf1e3af887f7155e3cdf8898d",
+          "model": {
+            "provider": "native",
+            "model": null,
+            "execution": "host_agent",
+            "model_verification": "host_reported_only"
+          },
+          "artifacts": [
+            {
+              "path": "artifacts\\collection\\compare-1794449440807573000-df67c5.md",
+              "sha256": "80d7ff487f816a85be2832a7edb1620cc25ee683b4ed2fd964b43c3429500bf5",
+              "origin": "ai",
+              "kind": "compare"
+            }
+          ],
+          "warnings": [],
+          "completed_steps": [
+            "comparison"
+          ],
+          "quality_status": "requires_source_and_user_review"
+        }
+      ]
+    },
+    "error": null,
+    "created": 1794449416.7650414,
+    "updated": 1794449440.826601
+  },
+  "idea-lab": {
+    "id": "4a1c116106df42cf8f0a986bb2e2796b",
+    "topic_id": "dcc23cd81a5141bba1235997467830b4",
+    "task": "idea-lab",
+    "params": {
+      "topic_id": "dcc23cd81a5141bba1235997467830b4",
+      "task": "idea-lab",
+      "entry_ids": [
+        "paper-9ec14085e50da570b847",
+        "paper-8e57af4df588e27138b1"
+      ],
+      "question": ""
+    },
+    "status": "completed",
+    "result": {
+      "status": "ready",
+      "topic": "验收：数字化与企业生产率",
+      "constructs": [
+        {
+          "construct_id": "construct_1",
+          "name": "Digitalization may",
+          "category": "construct",
+          "definition": "# Digitalization and firm productivity: a synthetic methods note ## ## Abstract This is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated. ## ## Theory and mechanism Digital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate t",
+          "mechanisms": [
+            "Digitalization may improve productivity through information sharing.",
+            "## ## Theory and mechanism Digital capabilities can reduce information costs.",
+            "Information sharing is a proposed mediator."
+          ],
+          "theory_base": [
+            "The proposed theory is the resource-based view.",
+            "## ## Theory and mechanism Digital capabilities can reduce information costs."
+          ],
+          "measurement": [
+            "## ## Data and measurement A hypothetical panel covers manufacturing firms from 2015 to 2022.",
+            "Productivity would be measured by value"
+          ],
+          "context": [
+            "Institutional context may moderate this relationship."
+          ],
+          "variables": {
+            "independent": [
+              "Digitalization may"
+            ],
+            "dependent": [
+              "productivity"
+            ],
+            "mediators": [
+              "information sharing"
+            ],
+            "moderators": [
+              "Institutional context may moderate this relationship."
+            ]
+          },
+          "empirical_design": {
+            "data_sources": [
+              "## ## Data and measurement A hypothetical panel covers manufacturing firms from 2015 to 2022."
+            ],
+            "identification": [],
+            "risks": []
+          },
+          "evidence": [
+            {
+              "id": "ev-b6c37ae3e80fe989",
+              "page": 1,
+              "text": "# Digitalization and firm productivity: a synthetic methods note\n\n## ## Abstract\n\nThis is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated.\n\n## ## Theory and mechanism\n\nDigital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification.\n\n## ## Data and measurement\n\nA hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value added per worker; digitalization by software investment divided by total assets. No real observations are provided.\n\n## ## Identification and limitations\n\nFirm and year fixed effects are a starting descriptive design. Reverse causality, measurement error and omitted variables remain concerns. The note has no natural experiment or valid instrumental variable. It cannot establish causality or novelty.\n\n## ## References\n\nBarney, J. (1991). Firm resources and sustained competitive advantage. Journal of Management, 17(1), 99-120.",
+              "start": 0,
+              "end": 1237,
+              "global_start": 0,
+              "global_end": 1237,
+              "quote": "# Digitalization and firm productivity: a synthetic methods note ## ## Abstract This is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated. ## ## Theory and mechanism Digital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification. ## ## Data and measurement A hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value",
+              "page_number": 1,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-9ec14085e50da570b847",
+              "title": "synthetic-scanned-paper"
+            }
+          ],
+          "uncertainty": "medium"
+        },
+        {
+          "construct_id": "construct_2",
+          "name": "Digitalization may",
+          "category": "construct",
+          "definition": "# Organizational capability and firm productivity: a synthetic methods note",
+          "mechanisms": [
+            "Digitalization may improve productivity through information sharing.",
+            "## Theory and mechanism",
+            "Information sharing is a proposed mediator."
+          ],
+          "theory_base": [
+            "The proposed theory is the resource-based view.",
+            "## Theory and mechanism"
+          ],
+          "measurement": [
+            "## Data and measurement",
+            "Productivity would be measured by value added per worker;",
+            "Reverse causality, measurement error and omitted variables remain concerns."
+          ],
+          "context": [
+            "Institutional context may moderate this relationship."
+          ],
+          "variables": {
+            "independent": [
+              "Digitalization may"
+            ],
+            "dependent": [
+              "productivity"
+            ],
+            "mediators": [
+              "information sharing"
+            ],
+            "moderators": [
+              "Institutional context may moderate this relationship."
+            ]
+          },
+          "empirical_design": {
+            "data_sources": [
+              "## Data and measurement",
+              "A hypothetical panel covers manufacturing firms from 2015 to 2022."
+            ],
+            "identification": [
+              "Firm and year fixed effects are a starting descriptive design.",
+              "The note has no natural experiment or valid instrumental variable."
+            ],
+            "risks": [
+              "Reverse causality, measurement error and omitted variables remain concerns."
+            ]
+          },
+          "evidence": [
+            {
+              "id": "ev-564cf5a8ab29771b",
+              "text": "# Organizational capability and firm productivity: a synthetic methods note",
+              "page": null,
+              "start": 0,
+              "end": 75,
+              "global_start": 0,
+              "global_end": 75,
+              "sha256": "f715287de533a1b5783144617825be519d0dea01e312b96a98d34aa0512953b9",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 0,
+                  "end": 75,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "# Organizational capability and firm productivity: a synthetic methods note",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-b117cf1348c9c095",
+              "text": "## Abstract",
+              "page": null,
+              "start": 79,
+              "end": 90,
+              "global_start": 79,
+              "global_end": 90,
+              "sha256": "266c21b810ae65751fa70f388a867e94d180e79fd15c69ed54dae7df1d29166b",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 79,
+                  "end": 90,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "## Abstract",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-c0917ffc92747cb1",
+              "text": "This is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated.",
+              "page": null,
+              "start": 92,
+              "end": 353,
+              "global_start": 92,
+              "global_end": 353,
+              "sha256": "8206b9546581b3e90f21643a80867142a82dc4f8760287ea7d7f0c95dc839578",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 92,
+                  "end": 353,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "This is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated.",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-c79c1d65c010d8dd",
+              "text": "## Theory and mechanism",
+              "page": null,
+              "start": 357,
+              "end": 380,
+              "global_start": 357,
+              "global_end": 380,
+              "sha256": "964901f024f40eb378f7191f5484b22db0e699439fe067fbfa903901def918d9",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 357,
+                  "end": 380,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "## Theory and mechanism",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-b8b54b35c75138d6",
+              "text": "Digital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification.",
+              "page": null,
+              "start": 382,
+              "end": 579,
+              "global_start": 382,
+              "global_end": 579,
+              "sha256": "b6412ec9d4da68065adb4360f6978f30065c328a2185520ff7d76e929ac88052",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 382,
+                  "end": 579,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "Digital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification.",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-4d9e214d66801bfa",
+              "text": "## Data and measurement",
+              "page": null,
+              "start": 583,
+              "end": 606,
+              "global_start": 583,
+              "global_end": 606,
+              "sha256": "b3bbece8b2b5793d1f26902b24e49d8341f5dc20c1e7c7fe03d00fd3b5f59ac5",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 583,
+                  "end": 606,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "## Data and measurement",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-8c778e9b088e4f9b",
+              "text": "A hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value added per worker; digitalization by employee training expenditure per worker. No real observations are provided.",
+              "page": null,
+              "start": 608,
+              "end": 827,
+              "global_start": 608,
+              "global_end": 827,
+              "sha256": "dc1c93e7e4f82e6813323211760c29629a6a41cc2207ce072045f4a3ed3df88f",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 608,
+                  "end": 827,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "A hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value added per worker; digitalization by employee training expenditure per worker. No real observations are provided.",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-9b791632dd705e09",
+              "text": "## Identification and limitations",
+              "page": null,
+              "start": 831,
+              "end": 864,
+              "global_start": 831,
+              "global_end": 864,
+              "sha256": "e7146cd80ea4db88c831c306feecac1751b4616ca331397c4ffabf6c78732245",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 831,
+                  "end": 864,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "## Identification and limitations",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-8d5f677a9a0d8ae3",
+              "text": "Firm and year fixed effects are a starting descriptive design. Reverse causality, measurement error and omitted variables remain concerns. The note has no natural experiment or valid instrumental variable. It cannot establish causality or novelty.",
+              "page": null,
+              "start": 866,
+              "end": 1113,
+              "global_start": 866,
+              "global_end": 1113,
+              "sha256": "fb34613d32f8e981703907232a8b3abfe71c47c0cc7d87de55c7518be0c2dd98",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 866,
+                  "end": 1113,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "Firm and year fixed effects are a starting descriptive design. Reverse causality, measurement error and omitted variables remain concerns. The note has no natural experiment or valid instrumental variable. It cannot establish causality or novelty.",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-80ef765aa0fa56aa",
+              "text": "## References",
+              "page": null,
+              "start": 1117,
+              "end": 1130,
+              "global_start": 1117,
+              "global_end": 1130,
+              "sha256": "65b72d86eeeb214ab8ca5fd24cb7cd7773e58084e95b670040df03e21e8c6fa7",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 1117,
+                  "end": 1130,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "## References",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-feb78f53d6b03da4",
+              "text": "Barney, J. (1991). Firm resources and sustained competitive advantage. Journal of Management, 17(1), 99-120.",
+              "page": null,
+              "start": 1132,
+              "end": 1240,
+              "global_start": 1132,
+              "global_end": 1240,
+              "sha256": "e7e687806bfe9742315b46367854946ce4725e5d43e452157ca7648c240496f0",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 1132,
+                  "end": 1240,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "Barney, J. (1991). Firm resources and sustained competitive advantage. Journal of Management, 17(1), 99-120.",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            }
+          ],
+          "uncertainty": "medium"
+        }
+      ],
+      "limitations": [
+        "规则提取仅整理当前证据片段；缺口限于本次检索范围，不能据此断言整个领域缺少研究或选题具有新颖性。"
+      ],
+      "gaps": [
+        {
+          "gap_id": "gap_1",
+          "construct_id": "construct_1",
+          "gap_type": "causal_identification",
+          "summary": "Digitalization may：当前片段未明确呈现因果识别，需回到原文确认。",
+          "why_it_matters": "补足因果识别证据后，才能判断研究贡献与设计可行性。",
+          "supporting_evidence": [
+            {
+              "id": "ev-b6c37ae3e80fe989",
+              "page": 1,
+              "text": "# Digitalization and firm productivity: a synthetic methods note\n\n## ## Abstract\n\nThis is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated.\n\n## ## Theory and mechanism\n\nDigital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification.\n\n## ## Data and measurement\n\nA hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value added per worker; digitalization by software investment divided by total assets. No real observations are provided.\n\n## ## Identification and limitations\n\nFirm and year fixed effects are a starting descriptive design. Reverse causality, measurement error and omitted variables remain concerns. The note has no natural experiment or valid instrumental variable. It cannot establish causality or novelty.\n\n## ## References\n\nBarney, J. (1991). Firm resources and sustained competitive advantage. Journal of Management, 17(1), 99-120.",
+              "start": 0,
+              "end": 1237,
+              "global_start": 0,
+              "global_end": 1237,
+              "quote": "# Digitalization and firm productivity: a synthetic methods note ## ## Abstract This is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated. ## ## Theory and mechanism Digital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification. ## ## Data and measurement A hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value",
+              "page_number": 1,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-9ec14085e50da570b847",
+              "title": "synthetic-scanned-paper"
+            }
+          ],
+          "needed_evidence": [
+            "identification strategy evidence",
+            "data source and variation source"
+          ],
+          "confidence": "medium"
+        }
+      ],
+      "ideas": [
+        {
+          "idea_id": "idea_1",
+          "construct_id": "construct_1",
+          "title": "Digitalization may如何影响productivity？",
+          "research_question": "Digitalization may如何影响productivity？",
+          "theory_base": [
+            "The proposed theory is the resource-based view.",
+            "## ## Theory and mechanism Digital capabilities can reduce information costs."
+          ],
+          "mechanism_chain": [
+            "Digitalization may",
+            "information sharing",
+            "productivity"
+          ],
+          "hypotheses": [
+            "待检验 H1：Digitalization may与productivity存在关联；方向与因果关系需验证。",
+            "待检验 H2：information sharing可能构成上述关系的中介路径。"
+          ],
+          "data_strategy": {
+            "sample": "## ## Data and measurement A hypothetical panel covers manufacturing firms from 2015 to 2022.",
+            "variables": [
+              "Digitalization may",
+              "information sharing",
+              "productivity"
+            ],
+            "identification": "待核对识别假设、外生变异和数据条件后选择方法"
+          },
+          "contribution": [
+            "候选贡献方向：补足causal_identification证据，需进一步文献核验。"
+          ],
+          "risks": [
+            "Digitalization may：当前片段未明确呈现因果识别，需回到原文确认。",
+            "候选问题与假说尚未验证，不能据此声称创新或因果效应。"
+          ],
+          "evidence_refs": [
+            "paper-9ec14085e50da570b847"
+          ],
+          "confidence": "low"
+        },
+        {
+          "idea_id": "idea_2",
+          "construct_id": "construct_2",
+          "title": "Digitalization may如何影响productivity？",
+          "research_question": "Digitalization may如何影响productivity？",
+          "theory_base": [
+            "The proposed theory is the resource-based view.",
+            "## Theory and mechanism"
+          ],
+          "mechanism_chain": [
+            "Digitalization may",
+            "information sharing",
+            "productivity"
+          ],
+          "hypotheses": [
+            "待检验 H1：Digitalization may与productivity存在关联；方向与因果关系需验证。",
+            "待检验 H2：information sharing可能构成上述关系的中介路径。"
+          ],
+          "data_strategy": {
+            "sample": "## Data and measurement；A hypothetical panel covers manufacturing firms from 2015 to 2022.",
+            "variables": [
+              "Digitalization may",
+              "information sharing",
+              "productivity"
+            ],
+            "identification": "Firm and year fixed effects are a starting descriptive design.；The note has no natural experiment or valid instrumental variable."
+          },
+          "contribution": [],
+          "risks": [
+            "Reverse causality, measurement error and omitted variables remain concerns.",
+            "候选问题与假说尚未验证，不能据此声称创新或因果效应。"
+          ],
+          "evidence_refs": [
+            "paper-8e57af4df588e27138b1"
+          ],
+          "confidence": "low"
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "artifacts\\collection\\idea-lab-1794449441167900400-5a7978.json",
+          "sha256": "2688f1741cc1abc2038ad7833a578543449821f9f119a2cf7a90b9dd0ab4e73a",
+          "origin": "rule-analysis",
+          "kind": "idea-lab"
+        }
+      ]
+    },
+    "error": null,
+    "created": 1794449441.075951,
+    "updated": 1794449441.1816266
+  },
+  "idea-lab.deepen": {
+    "id": "12514caac478407e9c9eccbad2e3c1d4",
+    "topic_id": "dcc23cd81a5141bba1235997467830b4",
+    "task": "idea-lab.deepen",
+    "params": {
+      "topic_id": "dcc23cd81a5141bba1235997467830b4",
+      "task": "idea-lab.deepen",
+      "entry_ids": [
+        "paper-9ec14085e50da570b847",
+        "paper-8e57af4df588e27138b1"
+      ],
+      "question": "沿用本主题已有构念，提出两个待检验研究设计，附原文证据和数据缺项。"
+    },
+    "status": "completed",
+    "result": {
+      "status": "ready",
+      "topic": "验收：数字化与企业生产率",
+      "constructs": [
+        {
+          "construct_id": "construct_1",
+          "name": "Digitalization may",
+          "category": "construct",
+          "definition": "# Digitalization and firm productivity: a synthetic methods note ## ## Abstract This is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated. ## ## Theory and mechanism Digital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate t",
+          "mechanisms": [
+            "Digitalization may improve productivity through information sharing.",
+            "## ## Theory and mechanism Digital capabilities can reduce information costs.",
+            "Information sharing is a proposed mediator."
+          ],
+          "theory_base": [
+            "The proposed theory is the resource-based view.",
+            "## ## Theory and mechanism Digital capabilities can reduce information costs."
+          ],
+          "measurement": [
+            "## ## Data and measurement A hypothetical panel covers manufacturing firms from 2015 to 2022.",
+            "Productivity would be measured by value"
+          ],
+          "context": [
+            "Institutional context may moderate this relationship."
+          ],
+          "variables": {
+            "independent": [
+              "Digitalization may"
+            ],
+            "dependent": [
+              "productivity"
+            ],
+            "mediators": [
+              "information sharing"
+            ],
+            "moderators": [
+              "Institutional context may moderate this relationship."
+            ]
+          },
+          "empirical_design": {
+            "data_sources": [
+              "## ## Data and measurement A hypothetical panel covers manufacturing firms from 2015 to 2022."
+            ],
+            "identification": [],
+            "risks": []
+          },
+          "evidence": [
+            {
+              "id": "ev-b6c37ae3e80fe989",
+              "page": 1,
+              "text": "# Digitalization and firm productivity: a synthetic methods note\n\n## ## Abstract\n\nThis is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated.\n\n## ## Theory and mechanism\n\nDigital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification.\n\n## ## Data and measurement\n\nA hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value added per worker; digitalization by software investment divided by total assets. No real observations are provided.\n\n## ## Identification and limitations\n\nFirm and year fixed effects are a starting descriptive design. Reverse causality, measurement error and omitted variables remain concerns. The note has no natural experiment or valid instrumental variable. It cannot establish causality or novelty.\n\n## ## References\n\nBarney, J. (1991). Firm resources and sustained competitive advantage. Journal of Management, 17(1), 99-120.",
+              "start": 0,
+              "end": 1237,
+              "global_start": 0,
+              "global_end": 1237,
+              "quote": "# Digitalization and firm productivity: a synthetic methods note ## ## Abstract This is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated. ## ## Theory and mechanism Digital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification. ## ## Data and measurement A hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value",
+              "page_number": 1,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-9ec14085e50da570b847",
+              "title": "synthetic-scanned-paper"
+            }
+          ],
+          "uncertainty": "medium"
+        },
+        {
+          "construct_id": "construct_2",
+          "name": "Digitalization may",
+          "category": "construct",
+          "definition": "# Organizational capability and firm productivity: a synthetic methods note",
+          "mechanisms": [
+            "Digitalization may improve productivity through information sharing.",
+            "## Theory and mechanism",
+            "Information sharing is a proposed mediator."
+          ],
+          "theory_base": [
+            "The proposed theory is the resource-based view.",
+            "## Theory and mechanism"
+          ],
+          "measurement": [
+            "## Data and measurement",
+            "Productivity would be measured by value added per worker;",
+            "Reverse causality, measurement error and omitted variables remain concerns."
+          ],
+          "context": [
+            "Institutional context may moderate this relationship."
+          ],
+          "variables": {
+            "independent": [
+              "Digitalization may"
+            ],
+            "dependent": [
+              "productivity"
+            ],
+            "mediators": [
+              "information sharing"
+            ],
+            "moderators": [
+              "Institutional context may moderate this relationship."
+            ]
+          },
+          "empirical_design": {
+            "data_sources": [
+              "## Data and measurement",
+              "A hypothetical panel covers manufacturing firms from 2015 to 2022."
+            ],
+            "identification": [
+              "Firm and year fixed effects are a starting descriptive design.",
+              "The note has no natural experiment or valid instrumental variable."
+            ],
+            "risks": [
+              "Reverse causality, measurement error and omitted variables remain concerns."
+            ]
+          },
+          "evidence": [
+            {
+              "id": "ev-564cf5a8ab29771b",
+              "text": "# Organizational capability and firm productivity: a synthetic methods note",
+              "page": null,
+              "start": 0,
+              "end": 75,
+              "global_start": 0,
+              "global_end": 75,
+              "sha256": "f715287de533a1b5783144617825be519d0dea01e312b96a98d34aa0512953b9",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 0,
+                  "end": 75,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "# Organizational capability and firm productivity: a synthetic methods note",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-b117cf1348c9c095",
+              "text": "## Abstract",
+              "page": null,
+              "start": 79,
+              "end": 90,
+              "global_start": 79,
+              "global_end": 90,
+              "sha256": "266c21b810ae65751fa70f388a867e94d180e79fd15c69ed54dae7df1d29166b",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 79,
+                  "end": 90,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "## Abstract",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-c0917ffc92747cb1",
+              "text": "This is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated.",
+              "page": null,
+              "start": 92,
+              "end": 353,
+              "global_start": 92,
+              "global_end": 353,
+              "sha256": "8206b9546581b3e90f21643a80867142a82dc4f8760287ea7d7f0c95dc839578",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 92,
+                  "end": 353,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "This is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated.",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-c79c1d65c010d8dd",
+              "text": "## Theory and mechanism",
+              "page": null,
+              "start": 357,
+              "end": 380,
+              "global_start": 357,
+              "global_end": 380,
+              "sha256": "964901f024f40eb378f7191f5484b22db0e699439fe067fbfa903901def918d9",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 357,
+                  "end": 380,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "## Theory and mechanism",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-b8b54b35c75138d6",
+              "text": "Digital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification.",
+              "page": null,
+              "start": 382,
+              "end": 579,
+              "global_start": 382,
+              "global_end": 579,
+              "sha256": "b6412ec9d4da68065adb4360f6978f30065c328a2185520ff7d76e929ac88052",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 382,
+                  "end": 579,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "Digital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification.",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-4d9e214d66801bfa",
+              "text": "## Data and measurement",
+              "page": null,
+              "start": 583,
+              "end": 606,
+              "global_start": 583,
+              "global_end": 606,
+              "sha256": "b3bbece8b2b5793d1f26902b24e49d8341f5dc20c1e7c7fe03d00fd3b5f59ac5",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 583,
+                  "end": 606,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "## Data and measurement",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-8c778e9b088e4f9b",
+              "text": "A hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value added per worker; digitalization by employee training expenditure per worker. No real observations are provided.",
+              "page": null,
+              "start": 608,
+              "end": 827,
+              "global_start": 608,
+              "global_end": 827,
+              "sha256": "dc1c93e7e4f82e6813323211760c29629a6a41cc2207ce072045f4a3ed3df88f",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 608,
+                  "end": 827,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "A hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value added per worker; digitalization by employee training expenditure per worker. No real observations are provided.",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-9b791632dd705e09",
+              "text": "## Identification and limitations",
+              "page": null,
+              "start": 831,
+              "end": 864,
+              "global_start": 831,
+              "global_end": 864,
+              "sha256": "e7146cd80ea4db88c831c306feecac1751b4616ca331397c4ffabf6c78732245",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 831,
+                  "end": 864,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "## Identification and limitations",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-8d5f677a9a0d8ae3",
+              "text": "Firm and year fixed effects are a starting descriptive design. Reverse causality, measurement error and omitted variables remain concerns. The note has no natural experiment or valid instrumental variable. It cannot establish causality or novelty.",
+              "page": null,
+              "start": 866,
+              "end": 1113,
+              "global_start": 866,
+              "global_end": 1113,
+              "sha256": "fb34613d32f8e981703907232a8b3abfe71c47c0cc7d87de55c7518be0c2dd98",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 866,
+                  "end": 1113,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "Firm and year fixed effects are a starting descriptive design. Reverse causality, measurement error and omitted variables remain concerns. The note has no natural experiment or valid instrumental variable. It cannot establish causality or novelty.",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-80ef765aa0fa56aa",
+              "text": "## References",
+              "page": null,
+              "start": 1117,
+              "end": 1130,
+              "global_start": 1117,
+              "global_end": 1130,
+              "sha256": "65b72d86eeeb214ab8ca5fd24cb7cd7773e58084e95b670040df03e21e8c6fa7",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 1117,
+                  "end": 1130,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "## References",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            },
+            {
+              "id": "ev-feb78f53d6b03da4",
+              "text": "Barney, J. (1991). Firm resources and sustained competitive advantage. Journal of Management, 17(1), 99-120.",
+              "page": null,
+              "start": 1132,
+              "end": 1240,
+              "global_start": 1132,
+              "global_end": 1240,
+              "sha256": "e7e687806bfe9742315b46367854946ce4725e5d43e452157ca7648c240496f0",
+              "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+              "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+              "source_ranges": [
+                {
+                  "source_file": "sources\\paper-8e57af4df588e27138b1\\8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1.md",
+                  "source_version_id": "8e57af4df588e27138b15cfa3df3eaf0dfa8df232e7acb7ac1bdb29edcbf1ab4-7b073542fa8c-4f53cda1",
+                  "start": 1132,
+                  "end": 1240,
+                  "match_method": "cleaned_markdown_exact",
+                  "physical_page": null
+                }
+              ],
+              "original_source_ranges": [],
+              "citation_basis": "selected_markdown_not_pdf_verbatim",
+              "quote": "Barney, J. (1991). Firm resources and sustained competitive advantage. Journal of Management, 17(1), 99-120.",
+              "page_number": null,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-8e57af4df588e27138b1",
+              "title": "synthetic-second"
+            }
+          ],
+          "uncertainty": "medium"
+        }
+      ],
+      "limitations": [
+        "规则提取仅整理当前证据片段；缺口限于本次检索范围，不能据此断言整个领域缺少研究或选题具有新颖性。"
+      ],
+      "gaps": [
+        {
+          "gap_id": "gap_1",
+          "construct_id": "construct_1",
+          "gap_type": "causal_identification",
+          "summary": "Digitalization may：当前片段未明确呈现因果识别，需回到原文确认。",
+          "why_it_matters": "补足因果识别证据后，才能判断研究贡献与设计可行性。",
+          "supporting_evidence": [
+            {
+              "id": "ev-b6c37ae3e80fe989",
+              "page": 1,
+              "text": "# Digitalization and firm productivity: a synthetic methods note\n\n## ## Abstract\n\nThis is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated.\n\n## ## Theory and mechanism\n\nDigital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification.\n\n## ## Data and measurement\n\nA hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value added per worker; digitalization by software investment divided by total assets. No real observations are provided.\n\n## ## Identification and limitations\n\nFirm and year fixed effects are a starting descriptive design. Reverse causality, measurement error and omitted variables remain concerns. The note has no natural experiment or valid instrumental variable. It cannot establish causality or novelty.\n\n## ## References\n\nBarney, J. (1991). Firm resources and sustained competitive advantage. Journal of Management, 17(1), 99-120.",
+              "start": 0,
+              "end": 1237,
+              "global_start": 0,
+              "global_end": 1237,
+              "quote": "# Digitalization and firm productivity: a synthetic methods note ## ## Abstract This is a synthetic paper used only to verify a literature reader. It is not a published empirical finding. Digitalization may improve productivity through information sharing. The proposed theory is the resource-based view. No causal effect has been estimated. ## ## Theory and mechanism Digital capabilities can reduce information costs. Information sharing is a proposed mediator. Institutional context may moderate this relationship. These hypotheses require empirical verification. ## ## Data and measurement A hypothetical panel covers manufacturing firms from 2015 to 2022. Productivity would be measured by value",
+              "page_number": 1,
+              "source_tier": "P0",
+              "source_kind": "source_window",
+              "entry_id": "paper-9ec14085e50da570b847",
+              "title": "synthetic-scanned-paper"
+            }
+          ],
+          "needed_evidence": [
+            "identification strategy evidence",
+            "data source and variation source"
+          ],
+          "confidence": "medium"
+        }
+      ],
+      "ideas": [
+        {
+          "idea_id": "idea_1",
+          "construct_id": "construct_1",
+          "title": "Digitalization may如何影响productivity？",
+          "research_question": "Digitalization may如何影响productivity？",
+          "theory_base": [
+            "The proposed theory is the resource-based view.",
+            "## ## Theory and mechanism Digital capabilities can reduce information costs."
+          ],
+          "mechanism_chain": [
+            "Digitalization may",
+            "information sharing",
+            "productivity"
+          ],
+          "hypotheses": [
+            "待检验 H1：Digitalization may与productivity存在关联；方向与因果关系需验证。",
+            "待检验 H2：information sharing可能构成上述关系的中介路径。"
+          ],
+          "data_strategy": {
+            "sample": "## ## Data and measurement A hypothetical panel covers manufacturing firms from 2015 to 2022.",
+            "variables": [
+              "Digitalization may",
+              "information sharing",
+              "productivity"
+            ],
+            "identification": "待核对识别假设、外生变异和数据条件后选择方法"
+          },
+          "contribution": [
+            "候选贡献方向：补足causal_identification证据，需进一步文献核验。"
+          ],
+          "risks": [
+            "Digitalization may：当前片段未明确呈现因果识别，需回到原文确认。",
+            "候选问题与假说尚未验证，不能据此声称创新或因果效应。"
+          ],
+          "evidence_refs": [
+            "paper-9ec14085e50da570b847"
+          ],
+          "confidence": "low"
+        },
+        {
+          "idea_id": "idea_2",
+          "construct_id": "construct_2",
+          "title": "Digitalization may如何影响productivity？",
+          "research_question": "Digitalization may如何影响productivity？",
+          "theory_base": [
+            "The proposed theory is the resource-based view.",
+            "## Theory and mechanism"
+          ],
+          "mechanism_chain": [
+            "Digitalization may",
+            "information sharing",
+            "productivity"
+          ],
+          "hypotheses": [
+            "待检验 H1：Digitalization may与productivity存在关联；方向与因果关系需验证。",
+            "待检验 H2：information sharing可能构成上述关系的中介路径。"
+          ],
+          "data_strategy": {
+            "sample": "## Data and measurement；A hypothetical panel covers manufacturing firms from 2015 to 2022.",
+            "variables": [
+              "Digitalization may",
+              "information sharing",
+              "productivity"
+            ],
+            "identification": "Firm and year fixed effects are a starting descriptive design.；The note has no natural experiment or valid instrumental variable."
+          },
+          "contribution": [],
+          "risks": [
+            "Reverse causality, measurement error and omitted variables remain concerns.",
+            "候选问题与假说尚未验证，不能据此声称创新或因果效应。"
+          ],
+          "evidence_refs": [
+            "paper-8e57af4df588e27138b1"
+          ],
+          "confidence": "low"
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "artifacts\\collection\\idea-lab-1794449443376514100-200121.json",
+          "sha256": "2688f1741cc1abc2038ad7833a578543449821f9f119a2cf7a90b9dd0ab4e73a",
+          "origin": "rule-analysis",
+          "kind": "idea-lab"
+        },
+        {
+          "path": "artifacts\\collection\\idea-lab-deepen-1794449489360553700-b33736.md",
+          "sha256": "2a42baf000f3eee12f2d6fde1eb9f1ac77b4f06cd5f5d761f0a81d4a277d1e7d",
+          "origin": "ai",
+          "kind": "idea-lab-deepen"
+        }
+      ],
+      "analysis": "## 0. 口径说明\n以下只依据给定原句与页码提炼。两篇材料均自述为 **synthetic paper / not a published empirical finding**，且明确 **No causal effect has been estimated**、**No real observations are provided**、**cannot establish causality or novelty**。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null（未提供页码）]  \n因此，下列“研究设计”只能是**待检验方案**，不能表述为已验证因果效应或领域创新。材料缺口只说明本次材料未提供相应证据，不等于领域空白。\n\n---\n\n## 1. 已有构念、机制与变量（原文陈述）\n\n| 要素 | 原文陈述 | 引用 |\n|---|---|---|\n| 理论 | “The proposed theory is the resource-based view.” | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 自变量构念 | 标题为 “Digitalization and firm productivity…”；抽取标签出现 “Digitalization may”，定义边界原句未完整给出 | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 因变量 | “Productivity would be measured by value added per worker” | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 中介机制 | “Digital capabilities can reduce information costs. Information sharing is a proposed mediator.” | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 调节情境 | “Institutional context may moderate this relationship.” | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 数字化测量 A | “digitalization by software investment divided by total assets” | [paper-9ec14085e50da570b847, p.1] |\n| 数字化测量 B | “digitalization by employee training expenditure per worker” | [paper-8e57af4df588e27138b1, p.null] |\n| 样本设定 | “A hypothetical panel covers manufacturing firms from 2015 to 2022.” | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 识别基线 | “Firm and year fixed effects are a starting descriptive design.”； “no natural experiment or valid instrumental variable” | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 识别风险 | “Reverse causality, measurement error and omitted variables remain concerns.” | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n\n**关键冲突（原文陈述）**：同一“digitalization”构念有两种不一致代理：软件投资/总资产 vs 员工培训支出/工人。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]  \n**推断（非原文结论）**：这两种代理可能分别偏向“技术资产投入”与“人力资本投入”，不能未经检验假定等价；这会构成构念效度风险。该判断是推断，需回原文和真实数据核验。\n\n---\n\n## 2. 六类证据缺口（按本材料可提炼，不等于领域缺口）\n\n| 缺口类型 | 本材料中的缺口 | 原文依据 |\n|---|---|---|\n| 1. 构念定义边界 | “Digitalization”除测量代理外，未给出完整定义；抽取标签 “Digitalization may” 需回原文校正 | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 2. 测量效度 | 数字化有两种冲突代理；信息共享、制度情境均未给出测量；生产率仅用 value added per worker | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 3. 中介机制 | “Information sharing is a proposed mediator”，但无中介变量数据或检验 | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 4. 调节情境 | “Institutional context may moderate”，但无常量化定义或数据 | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 5. 因果识别 | 仅 firm/year FE 描述性设计；无自然实验或有效 IV；反向因果、测量误差、遗漏变量未解决 | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n| 6. 数据可得性与外部效度 | 面板为 hypothetical，2015–2022 制造业；无真实观测、数据来源、覆盖与缺失信息 | [paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null] |\n\n---\n\n## 3. 待检验研究设计一：信息共享中介机制检验\n\n**候选选题（仅候选）**：数字化与企业生产率的关联：信息共享中介机制的描述性面板检验。\n\n**沿用构念**：digitalization（X）、information sharing（M）、productivity（Y）。  \n**机制链（原文陈述 + 推断）**：原文陈述“Digital capabilities can reduce information costs. Information sharing is a proposed mediator.”；推断链为 digitalization → 降低信息成本 → information sharing → productivity，但该链需检验。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]\n\n**待检验假说**：  \n- H1（待检验）：digitalization 与 value added per worker 存在关联；原文只说 “may improve productivity”，未估计方向与因果。[paper-9ec14085e50da570b847, p.1]  \n- H2（待检验）：information sharing 构成 digitalization 与 productivity 之间的中介路径；原文仅称 “proposed mediator”。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]\n\n**样本与测量**：假设性制造业企业面板 2015–2022；Y=value added per worker；X 需在两种冲突代理中预先选择或并列报告；M=信息共享测量待补。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]\n\n**识别策略**：以 firm FE + year FE 为起点，加入滞后数字化与中介变量；但原文明确这只是 “starting descriptive design”，且 “no natural experiment or valid instrumental variable”，因此本设计只能定位为**关联性与机制一致性检验**，不能主张因果。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]\n\n**数据缺项**：真实企业-年份面板；信息共享的可观测测量；数字化代理冲突的解决；value added per worker 原始数据；外生变异/IV/自然实验；样本来源、行业覆盖、缺失与 attrition。当前材料明确 “No real observations are provided”。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]\n\n---\n\n## 4. 待检验研究设计二：制度情境调节与数字化测量稳健性检验\n\n**候选选题（仅候选）**：制度情境调节下数字化与生产率的测量稳健性：软件投资 vs 员工培训支出。\n\n**沿用构念**：digitalization（X）、productivity（Y）、institutional context（调节）。  \n**原文依据**：数字化分别由 “software investment divided by total assets” 与 “employee training expenditure per worker” 测量；制度情境 “may moderate this relationship”。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]\n\n**待检验假说**：  \n- H3（待检验）：institutional context 调节 digitalization 与 productivity 的关联；原文仅称 “may moderate”，需检验。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]  \n- H4（待检验）：两种数字化代理（软件投资/总资产；培训支出/工人）给出的关联方向与稳健性是否一致；原文未提供等价性依据，且两者是冲突测量。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]  \n- H5（推断性测量假说，待检验）：培训支出/工人可能更多反映人力资本投入而非数字化；软件投资/总资产可能受资产结构影响。这是推断，不是原文结论，需构念效度检验。\n\n**样本与测量**：同一假设性制造业面板 2015–2022；Y=value added per worker；X 并列使用两种代理；调节变量 institutional context 需操作化。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]\n\n**识别策略**：firm FE + year FE + X×制度情境交互项，并进行两种 X 代理的稳健性比较；原文明确无自然实验/有效 IV，且反向因果、测量误差、遗漏变量仍是问题，因此仍属**描述性/关联性设计**，调节效应的因果解释待补。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]\n\n**数据缺项**：制度情境的可观测指标；两种数字化代理的真实财务/培训支出数据；真实观测；调节效应识别所需的外生制度变异；样本覆盖与外部效度信息；测量效度证据。当前材料均为 hypothetical/no real observations。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]\n\n---\n\n## 5. 冲突、边界与不能声称的内容\n\n1. **测量冲突必须保留**：软件投资/总资产与员工培训支出/工人是两种不同代理，不能合并为同一测量而不做效度检验。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]  \n2. **识别限制**：原文明确 firm/year FE 只是描述性起点；无自然实验、无有效 IV；反向因果、测量误差、遗漏变量仍是 concerns。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]  \n3. **数据可得性限制**：面板是 hypothetical，且 “No real observations are provided”；执行前需真实数据、测量与识别证据。[paper-9ec14085e50da570b847, p.1]；[paper-8e57af4df588e27138b1, p.null]  \n4. **贡献边界**：原文称 “It cannot establish causality or novelty”。因此上述两个设计只是**待检验候选**，材料缺口不等于领域创新，不能据此声称新颖性或因果效应。[paper-9ec14085e50da570b847, p.1]",
+      "model": "deepseek-official/deepseek-flash"
+    },
+    "error": null,
+    "created": 1794449443.159128,
+    "updated": 1794449489.375531
+  },
+  "packaged_read_long": {
+    "id": "30002af31c3741178a7dcec8e9e68ad1",
+    "topic_id": "dcc23cd81a5141bba1235997467830b4",
+    "task": "read.long",
+    "params": {
+      "topic_id": "dcc23cd81a5141bba1235997467830b4",
+      "task": "read.long",
+      "entry_ids": [
+        "paper-9ec14085e50da570b847"
+      ],
+      "dimensions": [
+        "theory"
+      ],
+      "question": "仅依据合成材料评估理论与证据。"
+    },
+    "status": "completed",
+    "result": {
+      "artifacts": [
+        {
+          "path": "artifacts\\paper-9ec14085e50da570b847\\read-long-1794449727988136600-aa6cec.md",
+          "sha256": "0d58359916668af257999260e112ed483964b1ad7ee1c4ec14bc04f00f204b6e",
+          "origin": "ai",
+          "kind": "read-long"
+        }
+      ],
+      "runs": [
+        {
+          "run_id": "30002af31c3741178a7dcec8e9e68ad1-0",
+          "status": "completed",
+          "task": "read.long",
+          "fingerprint": "7f9fe943d4eb2f43902729c80c654d44ef0f39623bf443f4ae8f57104ce48bec",
+          "model": {
+            "provider": "native",
+            "model": null,
+            "execution": "host_agent",
+            "model_verification": "host_reported_only"
+          },
+          "artifacts": [
+            {
+              "path": "artifacts\\paper-9ec14085e50da570b847\\read-long-1794449727988136600-aa6cec.md",
+              "sha256": "0d58359916668af257999260e112ed483964b1ad7ee1c4ec14bc04f00f204b6e",
+              "origin": "ai",
+              "kind": "read-long"
+            }
+          ],
+          "warnings": [],
+          "completed_steps": [
+            "theory"
+          ],
+          "quality_status": "requires_source_and_user_review"
+        }
+      ]
+    },
+    "error": null,
+    "created": 1794449694.1441665,
+    "updated": 1794449728.009686
+  }
+}

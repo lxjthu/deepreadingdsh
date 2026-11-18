@@ -1,0 +1,8 @@
+node_modules/
+**/__pycache__/
+*.tgz
+verification/*.log
+*.log
+*.bak-*
+*.bak-0.2.0
+.DS_Store

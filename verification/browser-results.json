@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "page_errors": [],
+  "checks": [
+    "topic creation",
+    "file upload",
+    "task list",
+    "idea lab navigation",
+    "prompt resource load",
+    "custom dimension import",
+    "formatted result view",
+    "desktop and mobile render"
+  ]
+}

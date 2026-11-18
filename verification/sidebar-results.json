@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "checks": [
+    "native sidebar entry",
+    "same-origin embedded main panel",
+    "topic creation and upload via prior browser run",
+    "evidence idea lab",
+    "panel switching retains selected topic",
+    "completed real model task launched through native panel",
+    "formatted model result",
+    "unauthenticated and foreign-origin requests rejected",
+    "internal bridge inaccessible"
+  ],
+  "model_task_id": "58e12090d4a34792b07e22424731010a",
+  "model_task_status": "completed",
+  "page_errors": [],
+  "timing_note": "Real inference exceeded the first 120-second browser assertion; completed state and rendered artifact were subsequently verified without repeating inference."
+}

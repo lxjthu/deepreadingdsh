@@ -1,0 +1,14 @@
+{
+  "name": "dsh-deep-reading",
+  "version": "0.3.1",
+  "description": "按研究主题管理的文献精读、Unlimited OCR 二代和经济管理创意实验室",
+  "type": "module",
+  "main": "index.js",
+  "exports": {".": "./index.js", "./client": "./client.js", "./package.json": "./package.json"},
+  "files": ["index.js", "bridge.js", "panel-proxy.js", "client.js", "cordis.patch.yml", "scripts/*.py", "scripts/*.mjs", "web/*", "upstream/scripts/*.py", "upstream/scripts/dra_core/*.py", "upstream/prompts", "upstream/assets", "upstream/references", "upstream/SKILL.md", "upstream/README.md", "upstream/THIRD_PARTY.md", "upstream/requirements.txt", "LICENSE", "README.md", "THIRD_PARTY.md"],
+  "engines": {"node": ">=22", "dsh": "0.2.2-rc.3"},
+  "peerDependencies": {"@deepseek-ai/cordis": "4.1.0"},
+  "dsh": {"bundle": {"patch": "./cordis.patch.yml"}, "client": {"platform": "web", "inject": ["@deepseek-ai/dsh-client-ui-sidebar", "@deepseek-ai/dsh-client-ui-layout"]}},
+  "scripts": {"test": "node --test test/*.test.js"},
+  "license": "Apache-2.0"
+}

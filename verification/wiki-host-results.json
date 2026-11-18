@@ -1,0 +1,26 @@
+{
+  "version": "0.3.1",
+  "matched_installed_files": [
+    "scripts/server.py",
+    "scripts/research_wiki.py",
+    "web/app.js",
+    "web/wiki.js",
+    "web/index.html",
+    "web/style.css",
+    "panel-proxy.js",
+    "package.json"
+  ],
+  "host_sidebar": true,
+  "installed_panel": true,
+  "wiki_entry": true,
+  "seven_type_options": true,
+  "proxy_asset": {
+    "status": 200,
+    "hasEditor": true
+  },
+  "page_errors": [],
+  "formal_topics": 1,
+  "formal_documents": 0,
+  "active_tasks": 0,
+  "live_model_used": false
+}

@@ -1,0 +1,4 @@
+- id: deep-reading
+  config:
+    dataDir: D:/code/dsh-deep-reading-runtime/test-home
+    python: D:/code/dsh-deep-reading-runtime/.venv/Scripts/python.exe

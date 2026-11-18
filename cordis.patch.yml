@@ -1,0 +1,5 @@
+- insert:
+    - id: deep-reading
+      name: dsh-deep-reading
+      config:
+        dataDir: "D:/code/deepseek-harness-runtime/data/deep-reading"

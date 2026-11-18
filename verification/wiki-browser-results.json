@@ -1,0 +1,17 @@
+{
+  "selected_extraction_task": true,
+  "seven_entity_types": true,
+  "candidate_batch_review": true,
+  "measurement_comparison": true,
+  "manual_edit": true,
+  "evidence_location": true,
+  "paper_backlinks": true,
+  "candidate_relink_search": true,
+  "history_restore_review": true,
+  "narrow_width": {
+    "body": 480,
+    "viewport": 480
+  },
+  "page_errors": [],
+  "source": "synthetic isolated fixtures; no live model"
+}

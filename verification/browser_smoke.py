@@ -1,0 +1,52 @@
+import json
+import time
+from pathlib import Path
+from playwright.sync_api import sync_playwright, expect
+
+root=Path(__file__).resolve().parents[1]
+config=json.loads(Path(r'D:\code\dsh-deep-reading-runtime\test-home\connection.json').read_text(encoding='utf-8'))
+errors=[]
+with sync_playwright() as p:
+    browser=p.chromium.launch(headless=True)
+    page=browser.new_page(viewport={'width':1440,'height':1000},device_scale_factor=1)
+    page.on('pageerror',lambda e:errors.append(str(e)))
+    page.goto(config['url']+'/#'+config['token'])
+    expect(page.locator('#topic-name')).to_contain_text('验收')
+    page.get_by_role('button',name='创建主题').click()
+    page.locator('#new-name').fill('界面验收：组织能力')
+    page.locator('#new-description').fill('检验主题切换、文献导入、证据与任务入口。')
+    page.locator('#topic-form button.primary').click()
+    expect(page.locator('#topic-name')).to_have_text('界面验收：组织能力')
+    page.get_by_role('button',name='＋ 导入文献').click()
+    page.locator('#import-file').set_input_files(str(root/'verification/inputs/synthetic-paper.md'))
+    page.locator('#import-submit').click()
+    expect(page.locator('#tasks')).to_contain_text('导入文献')
+    page.get_by_role('button',name='创意实验室',exact=True).click()
+    expect(page.locator('#ideas h2')).to_have_text('经济管理创意实验室')
+    expect(page.locator('.idea-steps')).to_contain_text('六类证据缺口')
+    page.screenshot(path=str(root/'verification/workbench-ideas.png'),full_page=True)
+    page.get_by_role('button',name='文献库',exact=True).click()
+    page.screenshot(path=str(root/'verification/workbench-library.png'),full_page=True)
+    page.get_by_role('button',name='提示词',exact=True).click()
+    page.locator('#prompt-load').click()
+    expect(page.locator('#prompt-text')).not_to_have_value('')
+    page.locator('#prompts details summary').click()
+    page.locator('#dimension-name').fill('acceptance')
+    page.locator('#dimension-json').fill(json.dumps({'dimensions':[{'name':'识别策略','instruction':'核对原文中的识别假设，逐项标记证据不足。'}]},ensure_ascii=False))
+    page.locator('#dimension-save').click()
+    expect(page.locator('#notice')).to_contain_text('维度模板已保存')
+    page.get_by_role('button',name='精读与分析',exact=True).click()
+    expect(page.locator('#dimension-set option[value="acceptance"]')).to_have_count(1)
+    page.locator('#topics button').first.click()
+    page.get_by_role('button',name='任务与成果',exact=True).click()
+    page.locator('#tasks button[data-result]').first.click()
+    expect(page.locator('#viewer-body')).not_to_be_empty()
+    page.screenshot(path=str(root/'verification/workbench-result.png'),full_page=True)
+    page.locator('[data-close="viewer"]').click()
+    page.set_viewport_size({'width':390,'height':844})
+    page.get_by_role('button',name='创意实验室',exact=True).click()
+    page.screenshot(path=str(root/'verification/workbench-mobile.png'),full_page=True)
+    assert not errors,errors
+    browser.close()
+(root/'verification/browser-results.json').write_text(json.dumps({'status':'passed','page_errors':errors,'checks':['topic creation','file upload','task list','idea lab navigation','prompt resource load','custom dimension import','formatted result view','desktop and mobile render']},ensure_ascii=False,indent=2),encoding='utf-8')
+print('Browser acceptance passed')

@@ -33,6 +33,16 @@ from dra_core.jobs import execute
 from idea_lab import run_idea_lab_pipeline
 from library import local_metadata, extract_metadata, merge_entry, library_entry, clean_metadata
 from research_wiki import ResearchWiki
+import pdf_source
+import pdf_cards
+import pdf_visual
+from note_files import NoteFiles
+
+STATIC = {'/': 'index.html', '/app.js': 'app.js', '/wiki.js': 'wiki.js', '/style.css': 'style.css',
+          '/pdf': 'pdf.html', '/pdf.js': 'pdf.js', '/pdf.css': 'pdf.css', '/card': 'card.html', '/card.js': 'card.js', '/card.css': 'card.css'}
+ANNOTATION_KINDS = {'highlight', 'box', 'note', 'underline'}
+ANNOTATION_COLORS = {'yellow', 'green', 'pink', 'blue', 'orange'}
+_annotation_counts = {}
 
 TASKS = {
     'read.quant': '七步精读', 'read.qual': '四步精读', 'read.long': '长文本维度精读',
@@ -41,7 +51,7 @@ TASKS = {
     'qa': '原文证据问答', 'references.extract': '参考文献提取',
     'references.trace': '正文引用追踪', 'references.style-analyze': '参考文献格式分析', 'references.format': '参考文献排版',
     'metadata.extract': '题录提取', 'compare': '跨论文比较', 'synthesize': '主题综述',
-    'cards.create': '知识卡片', 'writing-style.single': '写作风格分析',
+    'pdf.card': 'PDF 选段卡片', 'cards.create': '知识卡片', 'writing-style.single': '写作风格分析',
     'writing-style.batch': '多篇写作风格比较', 'templates.generate': '生成阅读维度模板',
     'library.query_parser': '文献库检索意图分析', 'library.report_writer': '文献库研究报告',
     'library.paper_comment_writer': '论文评论', 'library.tag_target_selector': '文献标签建议',
@@ -133,6 +143,11 @@ class Store:
             db.execute("UPDATE tasks SET status='interrupted',error='应用已重启，可继续已保存的任务' WHERE status IN ('running','queued')")
             db.execute("UPDATE calls SET status='abandoned' WHERE status IN ('pending','claimed')")
         self.wiki = ResearchWiki(self)
+        pdf_cards.initialize(self)
+        pdf_visual.initialize(self)
+        self.notes = NoteFiles(self)
+        self.notes.rebuild()
+        self.reader_sessions = {}
 
     @contextmanager
     def db(self):
@@ -146,6 +161,139 @@ class Store:
     def rows(self, sql, values=()):
         with self.db() as db:
             return [dict(r) for r in db.execute(sql, values)]
+
+    def entry(self, entry_id):
+        try: return self.workspace.get(str(entry_id))
+        except StopIteration: raise ValueError('未找到该文献') from None
+
+    def pdf_source_record(self, entry_id):
+        """Return the PDF attachment record whose file exists inside the workspace."""
+        for source in reversed(self.entry(entry_id).get('sources') or []):
+            candidate = Path(str(source.get('path') or ''))
+            if candidate.suffix.lower() != '.pdf': continue
+            resolved = (candidate if candidate.is_absolute() else self.workspace.path(candidate)).resolve()
+            if resolved.is_file() and resolved.is_relative_to(self.workspace.root):
+                return {**source, 'resolved': resolved}
+        raise ValueError('该文献没有可显示的 PDF 原文')
+
+    def pdf_source_path(self, entry_id):
+        return self.pdf_source_record(entry_id)['resolved']
+
+    def annotation_file(self, entry_id):
+        entry_id = str(entry_id)
+        if not re.fullmatch(r'[A-Za-z0-9_-]{1,80}', entry_id): raise ValueError('文献标识无效')
+        return self.workspace.path('annotations/' + entry_id + '.json')
+
+    def annotations(self, entry_id):
+        self.entry(entry_id)
+        path = self.annotation_file(entry_id)
+        if not path.exists(): return []
+        value = read_json(path)
+        items = value.get('items') if isinstance(value, dict) else None
+        if not isinstance(items, list): raise ValueError('标记文件损坏，请检查 ' + str(path))
+        return items
+
+    def annotation_counts(self):
+        """Count saved marks per entry for the library list, cached by file stamp."""
+        folder = self.workspace.path('annotations')
+        if not folder.is_dir(): return {}
+        counts, live = {}, set()
+        for path in folder.glob('*.json'):
+            try:
+                info = path.stat()
+                key = (str(path), info.st_mtime_ns, info.st_size)
+                live.add(key)
+                count = _annotation_counts.get(key)
+                if count is None:
+                    value = read_json(path)
+                    items = value.get('items') if isinstance(value, dict) else []
+                    count = len(items) if isinstance(items, list) else 0
+                    _annotation_counts[key] = count
+                if count: counts[path.stem] = count
+            except (OSError, ValueError):
+                continue
+        for key in set(_annotation_counts) - live: _annotation_counts.pop(key, None)
+        return counts
+
+    @staticmethod
+    def clip(value, limit=4000):
+        return '' if value is None else str(value).strip()[:limit]
+
+    def clean_annotation(self, item, pages):
+        """Validate one mark; rectangles are stored as page-relative fractions."""
+        if not isinstance(item, dict): raise ValueError('标记内容无效')
+        kind = str(item.get('kind') or 'highlight')
+        if kind not in ANNOTATION_KINDS: raise ValueError('标记类型无效')
+        color = str(item.get('color') or 'yellow')
+        if color not in ANNOTATION_COLORS: raise ValueError('标记颜色无效')
+        try: page = int(item.get('page'))
+        except (TypeError, ValueError): raise ValueError('标记页码无效') from None
+        if not 1 <= page <= pages: raise ValueError('标记页码超出范围')
+        rects = []
+        for rect in (item.get('rects') or [])[:60]:
+            if not isinstance(rect, (list, tuple)) or len(rect) != 4: raise ValueError('标记区域无效')
+            try: values = [float(value) for value in rect]
+            except (TypeError, ValueError): raise ValueError('标记区域无效') from None
+            if any(value != value for value in values): raise ValueError('标记区域无效')
+            x0, x1 = sorted((min(max(values[0], 0.0), 1.0), min(max(values[2], 0.0), 1.0)))
+            y0, y1 = sorted((min(max(values[1], 0.0), 1.0), min(max(values[3], 0.0), 1.0)))
+            if x1 - x0 < 0.001 or y1 - y0 < 0.001: continue
+            rects.append([round(x0, 5), round(y0, 5), round(x1, 5), round(y1, 5)])
+        if not rects: raise ValueError('标记区域为空，请重新框选')
+        marker = str(item.get('id') or uuid.uuid4().hex[:12])
+        if not re.fullmatch(r'[A-Za-z0-9_-]{1,40}', marker): raise ValueError('标记编号无效')
+        stamp = time.time()
+        try: created = float(item.get('created') or stamp)
+        except (TypeError, ValueError): created = stamp
+        return {'id': marker, 'page': page, 'kind': kind, 'color': color, 'rects': rects,
+                'quote': self.clip(item.get('quote')), 'note': self.clip(item.get('note')),
+                'created': created, 'updated': stamp}
+
+    def update_annotation(self, body):
+        """Create, edit or delete one mark; returns every mark of the document."""
+        if not isinstance(body, dict): raise ValueError('请求内容无效')
+        entry_id = str(body.get('entry_id') or '')
+        self.entry(entry_id)
+        operation = str(body.get('op') or '')
+        if operation not in ('create', 'update', 'delete'): raise ValueError('未知的标记操作')
+        item = body.get('item') if isinstance(body.get('item'), dict) else {}
+        marker = str(item.get('id') or '')
+        path = self.annotation_file(entry_id)
+        pages = pdf_source.describe(self.pdf_source_path(entry_id))['page_count'] if operation != 'delete' else 0
+        with self.workspace.lock():
+            data = read_json(path) if path.exists() else {'entry_id': entry_id, 'items': []}
+            items = data.get('items') if isinstance(data.get('items'), list) else []
+            if operation == 'create':
+                clean = self.clean_annotation(item, pages)
+                if clean['kind'] in ('highlight','box'):
+                    sha = pdf_cards.fingerprint(self.pdf_source_path(entry_id))
+                    if item.get('source_sha256') and item['source_sha256'] != sha:
+                        raise ValueError('PDF 来源已变化，请刷新后重新高亮')
+                    clean['source_sha256'] = sha
+                    if item.get('segments'):
+                        source = pdf_cards.selection(self, {'entry_id':entry_id,'source_sha256':sha,'segments':item['segments']})
+                        if any(segment['page'] != clean['page'] for segment in source['segments']):
+                            raise ValueError('高亮位置与页码不一致')
+                        clean['segments'] = source['segments']
+                        clean['quote'] = source['selected_text']
+                if any(existing.get('id') == clean['id'] for existing in items):
+                    clean['id'] = uuid.uuid4().hex[:12]
+                items = items + [clean]
+            elif operation == 'update':
+                index = next((position for position, existing in enumerate(items) if existing.get('id') == marker), None)
+                if index is None: raise ValueError('未找到要修改的标记')
+                clean = self.clean_annotation({**items[index], **item}, pages)
+                clean['created'] = items[index].get('created') or clean['created']
+                for key in ('source_sha256','segments'):
+                    if key in items[index]: clean[key] = items[index][key]
+                if 'segments' in clean: clean['quote'] = items[index]['quote']
+                items = items[:index] + [clean] + items[index + 1:]
+            else:
+                remaining = [existing for existing in items if existing.get('id') != marker]
+                if len(remaining) == len(items): raise ValueError('未找到要删除的标记')
+                items = remaining
+            atomic_json(path, {'entry_id': entry_id, 'updated': time.time(), 'items': items})
+        return {'items': items}
 
     def task(self, task_id):
         rows = self.rows('SELECT * FROM tasks WHERE id=?', (task_id,))
@@ -162,6 +310,7 @@ class Store:
             row['model_calls'] = self.usage(row['id'])
         return {'topics': topics, 'links': links, 'documents': self.workspace.entries(), 'tasks': tasks,
                 'library': [library_entry(e, tasks) for e in self.workspace.entries()],
+                'annotation_counts': self.annotation_counts(),
                 'home': str(self.home), 'capabilities': TASKS}
 
     def usage(self, task_id):
@@ -239,11 +388,11 @@ class Store:
             self.update(task_id, status='queued', error=None)
         return {'status': 'queued'}
 
-    def model_call(self, task_id, messages):
+    def model_call(self, task_id, messages, images=None):
         call_id = uuid.uuid4().hex
         with self.mutex, self.db() as db:
             self.check_cancel(task_id)
-            db.execute('INSERT INTO calls VALUES(?,?,?,?,?,?,?)', (call_id, task_id, json.dumps({'messages': messages}, ensure_ascii=False), 'pending', None, None, time.time()))
+            db.execute('INSERT INTO calls VALUES(?,?,?,?,?,?,?)', (call_id, task_id, json.dumps({'messages': messages, **({'images':images} if images else {})}, ensure_ascii=False), 'pending', None, None, time.time()))
         deadline = time.monotonic()+900
         while not self.stop.wait(.2):
             self.check_cancel(task_id)
@@ -492,6 +641,7 @@ class Store:
 
     def run_task(self, row):
         params=json.loads(row['params'])
+        if row['task']=='pdf.card': return pdf_cards.run(self, params, row['id'])
         if row['task']=='import': return self.import_batch(params,row['id'])
         if row['task']=='wiki.extract': return self.wiki.extract(params,row['id'])
         if row['task'].startswith('idea-lab'): return self.idea_lab(params,row['id'])
@@ -600,11 +750,11 @@ def read_json_from_zip(archive,name): return json.loads(archive.read(name))
 class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args): pass
     def send_json(self,value,code=200): self.send_bytes(json.dumps(value,ensure_ascii=False).encode('utf-8'),'application/json; charset=utf-8',code)
-    def send_bytes(self,data,mime,code=200):
+    def send_bytes(self,data,mime,code=200,cache='no-store'):
         self.send_response(code)
         self.send_header('Content-Type',mime)
         self.send_header('Content-Length',str(len(data)))
-        self.send_header('Cache-Control','no-store')
+        self.send_header('Cache-Control',cache)
         self.send_header('X-Content-Type-Options','nosniff')
         self.send_header('Referrer-Policy','no-referrer')
         self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; frame-ancestors 'self'; object-src 'none'")
@@ -615,13 +765,26 @@ class Handler(BaseHTTPRequestHandler):
         origin=self.headers.get('Origin')
         if origin and origin!=self.server.base: return False
         token=self.headers.get('X-Reading-Token') or parse_qs(urlsplit(self.path).query).get('token',[''])[0]
-        return secrets.compare_digest(token,self.server.token)
+        self.reader_entry = None
+        if secrets.compare_digest(token,self.server.token): return True
+        session = self.server.store.reader_sessions.get(token)
+        if not session or session['expires'] < time.monotonic(): return False
+        route = urlsplit(self.path).path
+        allowed = {'GET': {'/api/pdf/meta', '/api/pdf/page', '/api/pdf/text', '/api/pdf/raw', '/api/cards', '/api/visuals', '/api/visual/image', '/api/annotations'},
+                   'POST': {'/api/cards', '/api/cards/batch', '/api/cards/visual', '/api/cards/render', '/api/cards/action', '/api/annotations'}}
+        if route not in allowed.get(self.command, set()): return False
+        if self.command == 'GET' and parse_qs(urlsplit(self.path).query).get('entry_id', [''])[0] != session['entry_id']: return False
+        self.reader_entry = session['entry_id']
+        return True
 
     def do_GET(self):
         try:
             route=urlsplit(self.path).path
-            if route in ('/','/app.js','/wiki.js','/style.css'):
-                file=ROOT/'web'/({'/':'index.html','/app.js':'app.js','/wiki.js':'wiki.js','/style.css':'style.css'}[route])
+            if re.fullmatch(r'/katex/(?:katex\.min\.(?:js|css)|fonts/KaTeX_[A-Za-z0-9_-]+\.(?:woff2?|ttf))',route):
+                file=ROOT/'upstream/assets/reader'/route.lstrip('/')
+                return self.send_bytes(file.read_bytes(),mimetypes.guess_type(file)[0] or 'application/octet-stream')
+            if route in STATIC:
+                file=ROOT/'web'/STATIC[route]
                 return self.send_bytes(file.read_bytes(),mimetypes.guess_type(file)[0]+'; charset=utf-8')
             if not self.authorized(): return self.send_json({'error':'本机访问标识无效，请从 dsh 插件重新打开工作台'},403)
             store=self.server.store
@@ -655,6 +818,34 @@ class Handler(BaseHTTPRequestHandler):
             if route=='/api/document':
                 doc=resolve_document(store.workspace,query['entry_id'][0])
                 return self.send_json(doc)
+            if route=='/bridge/notes/status': return self.send_json(store.notes.status())
+            if route=='/api/visuals': return self.send_json(pdf_visual.listing(store, query['entry_id'][0]))
+            if route=='/api/visual/image': return self.send_bytes(pdf_visual.image_bytes(store,query['entry_id'][0],query['id'][0]),'image/png')
+            if route=='/api/cards':
+                return self.send_json(pdf_cards.listing(store, query['entry_id'][0]))
+            if route=='/api/pdf/raw':
+                return self.send_bytes(store.pdf_source_path(query['entry_id'][0]).read_bytes(), 'application/pdf')
+            if route=='/api/pdf/meta':
+                entry_id=query['entry_id'][0]
+                entry=store.entry(entry_id)
+                source=store.pdf_source_record(entry_id)
+                meta=pdf_source.describe(source['resolved'])
+                raw=Path(str(source.get('path') or '')).as_posix()
+                return self.send_json({'entry_id':entry_id,'title':entry.get('title') or '',
+                                       'pages':meta['pages'],'page_count':meta['page_count'],
+                                       'source_name':source.get('original_name') or Path(raw).name,
+                                       'source_sha256':pdf_cards.fingerprint(source['resolved']),'raw_path':'workspace/'+raw})
+            if route=='/api/pdf/page':
+                path=store.pdf_source_path(query['entry_id'][0])
+                data=pdf_source.render_page(path,query['page'][0],query.get('scale',['1'])[0])
+                return self.send_bytes(data,'image/png',cache='private, max-age=600')
+            if route=='/api/pdf/text':
+                path=store.pdf_source_path(query['entry_id'][0])
+                number=int(query['page'][0])
+                return self.send_json({'page':number,'pages':pdf_source.describe(path)['page_count'],
+                                       'words':pdf_source.page_words(path,number)})
+            if route=='/api/annotations':
+                return self.send_json({'items':store.annotations(query['entry_id'][0])})
             return self.send_json({'error':'Not found'},404)
         except (ValueError,KeyError,StopIteration) as exc: self.send_json({'error':str(exc)},400)
         except Exception as exc: self.send_json({'error':str(exc)},500)
@@ -667,7 +858,27 @@ class Handler(BaseHTTPRequestHandler):
             body=json.loads(self.rfile.read(size))
             route=urlsplit(self.path).path
             store=self.server.store
-            if route=='/bridge/prepare-switch':
+            if self.reader_entry and body.get('entry_id') != self.reader_entry:
+                return self.send_json({'error': '阅读连接只能访问当前文献'}, 403)
+            if route=='/api/pdf/session':
+                with store.mutex:
+                    if not store.accepting: raise ValueError('资料目录正在切换')
+                    entry_id = str(body.get('entry_id') or '')
+                    store.pdf_source_path(entry_id)
+                    now = time.monotonic()
+                    store.reader_sessions = {key: value for key, value in store.reader_sessions.items() if value['expires'] > now}
+                    if len(store.reader_sessions) >= 64: raise ValueError('阅读连接过多，请重启工作台后重试')
+                    reader_token = secrets.token_urlsafe(32)
+                    store.reader_sessions[reader_token] = {'entry_id': entry_id, 'expires': now + 8*3600}
+                    result = {'url': self.server.base + '/pdf#' + 'entry_id=' + entry_id + '&token=' + reader_token}
+            elif route=='/bridge/notes/configure': result=store.notes.configure(body.get('path',''))
+            elif route=='/bridge/notes/rebuild': result={'errors':store.notes.rebuild()}
+            elif route=='/api/cards/visual': result=pdf_visual.enqueue(store,body)
+            elif route=='/api/cards/render': result=pdf_cards.render_card(store, body)
+            elif route=='/api/cards/batch': result=pdf_cards.enqueue_batch(store, body)
+            elif route=='/api/cards': result=pdf_cards.enqueue(store, body)
+            elif route=='/api/cards/action': result=pdf_cards.operation(store, body)
+            elif route=='/bridge/prepare-switch':
                 with store.mutex:
                     if store.active_task or store.rows("SELECT id FROM tasks WHERE status IN ('running','queued')"): raise ValueError('请先结束运行或排队任务再切换资料目录')
                     store.accepting=False
@@ -676,6 +887,7 @@ class Handler(BaseHTTPRequestHandler):
             elif route=='/api/link': result=store.link(body['topic_id'],body['entry_id'])
             elif route=='/api/import': result=store.new_task({**body,'task':'import'})
             elif route=='/api/library': result=store.update_library(body)
+            elif route=='/api/annotations': result=store.update_annotation(body)
             elif route=='/api/wiki/review': result=store.wiki.review(body['items'],body.get('decision','confirm'))
             elif route=='/api/wiki/rebase': result=store.wiki.rebase(body['id'])
             elif route=='/api/wiki/edit': result=store.wiki.edit(body)
@@ -761,6 +973,7 @@ def validate_home(value):
                 for table,columns in {'topics':{'id','name','description','created'},'topic_documents':{'topic_id','entry_id'},'tasks':{'id','topic_id','task','params','status','result','error','created','updated'},'calls':{'id','task_id','payload','status','response','lease','created'}}.items():
                     if not columns.issubset({r[1] for r in db.execute('PRAGMA table_info('+table+')')}): raise ValueError('资料库格式不兼容：'+table)
                 if db.execute("SELECT 1 FROM sqlite_master WHERE name='wiki_meta'").fetchone() and db.execute('SELECT version FROM wiki_meta').fetchone()[0]!=1: raise ValueError('Wiki 版本不兼容')
+                if db.execute("SELECT 1 FROM sqlite_master WHERE name='pdf_cards_meta'").fetchone() and db.execute('SELECT version FROM pdf_cards_meta').fetchone()[0]!=1: raise ValueError('PDF 卡片版本不兼容')
             if read_json(path/'workspace/workspace.json').get('schema_version')!=1: raise ValueError('工作区版本不兼容')
             entries=read_json(path/'workspace/library/index.json').get('entries')
             if not isinstance(entries,list): raise ValueError('文献索引损坏')

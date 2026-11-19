@@ -3,19 +3,19 @@ import { spawn, execFile } from 'node:child_process';
 import { readFileSync, writeFileSync, renameSync, existsSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { randomBytes } from 'node:crypto';
-import { requestOptions, generate } from './bridge.js';
+import { requestOptions, generate, admitVisionRequest } from './bridge.js';
 
 /** Start, stop and inspect a single backend; callers serialize replacements. */
 export class ReadingService {
-  constructor({ root, home, settings, llm, messages, selection, log, spawnProcess = spawn }) {
-    Object.assign(this, { root, home, settings, llm, messages, selection, log, spawnProcess });
+  constructor({ root, home, settings, llm, attachments, messages, selection, log, spawnProcess = spawn }) {
+    Object.assign(this, { root, home, settings, llm, attachments, messages, selection, log, spawnProcess });
     this.token = randomBytes(32).toString('hex');
     this.lifetime = new AbortController();
     this.status = 'starting';
     this.error = null;
   }
-  async call(path, body, signal = this.lifetime.signal) {
-    const response = await fetch(this.base + path, { method: body === undefined ? 'GET' : 'POST', headers: { 'X-Reading-Token': this.token, 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body), signal: AbortSignal.any([signal, AbortSignal.timeout(15000)]) });
+  async call(path, body, signal = this.lifetime.signal, timeoutMs=15000) {
+    const response = await fetch(this.base + path, { method: body === undefined ? 'GET' : 'POST', headers: { 'X-Reading-Token': this.token, 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body), signal: AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]) });
     const value = await response.json();
     if (!response.ok) throw new Error(value.error || `Reading service ${response.status}`);
     return value;
@@ -98,7 +98,11 @@ export class ReadingService {
       }
     })();
     let answer;
-    try { answer = await generate(this.llm, requestOptions(request, this.messages, this.selection(), signal)); }
+    try {
+      const selected=this.selection();
+      const admitted=await admitVisionRequest(request,this.llm,this.attachments,selected,signal);
+      answer = await generate(this.llm, requestOptions(admitted, this.messages, selected, signal));
+    }
     catch (error) { answer = { error: error.message, code: error.code || 'MODEL_ERROR' }; }
     finally { active.abort(); await monitor; }
     if (!this.lifetime.signal.aborted) await this.call('/bridge/respond', { id: request.id, lease: request.lease, ...answer });

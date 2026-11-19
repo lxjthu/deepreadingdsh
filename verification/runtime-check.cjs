@@ -9,5 +9,8 @@ const hostRequire=createRequire('D:/Program Files/DeepSeekharness/resources/app.
   for(const message of result.messages){assert.ok(message.id);assert.ok(message.source);assert.ok(Object.isFrozen(message));}
   assert.equal(result.messages[1].source.kind,'user');assert.equal(result.messages[2].source.kind,'model');
   assert.equal(result.reasoningEffort,'high');assert.equal('maxTokens' in result,false);
-  console.log('Installed 0.2.2-rc.3 runtime message helpers: PASS (roles, id, source, immutable messages, effort, inherited token cap)');
+  const image={attachmentId:'verified-image',mediaType:'image/png',bytes:10,width:1,height:1};
+  const vision=requestOptions({messages:[{role:'user',content:'recognize'}],imageRefs:[image]},llm,{provider:'test',model:'vision'});
+  assert.equal(vision.messages[0].content[1].type,'image');assert.equal(vision.messages[0].content[1].attachment.attachmentId,'verified-image');
+  console.log('Installed 0.2.2-rc.5 runtime message helpers: PASS (roles, id, source, immutable messages, effort, inherited token cap)');
 })().catch(error=>{console.error(error);process.exitCode=1;});

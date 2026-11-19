@@ -4,3 +4,11 @@ dialog .markdown-body{font-size:14px;line-height:1.9;color:#28463c}dialog .markd
 
 /* Research Wiki */
 .wiki-grid{display:grid;grid-template-columns:minmax(210px,28%) minmax(0,1fr);gap:24px;margin-top:22px}.wiki-item{display:block;width:100%;text-align:left;margin:8px 0;white-space:normal;overflow-wrap:anywhere}.wiki-item small{display:block;margin-top:6px}.wiki-item.active{border-color:var(--accent,#286f59)}#wiki-page{min-width:0;overflow-wrap:anywhere}.wiki-record,.wiki-candidate{border:1px solid #d8dfd9;padding:16px;border-radius:10px;margin:14px 0}.wiki-record.pending,.wiki-candidate{border-left:4px solid #be922d}.wiki-record.confirmed{border-left:4px solid #36775e}.wiki-evidence{margin:12px 0;background:#f5f6f1;padding:10px;border-radius:6px}.wiki-evidence blockquote{white-space:pre-wrap;margin:0 0 8px;padding-left:12px;border-left:3px solid #b6c8bb}.wiki-evidence small{display:block;overflow-wrap:anywhere}.wiki-note{white-space:pre-wrap}.wiki-table{overflow:auto}.wiki-table table{border-collapse:collapse;width:100%;min-width:700px}.wiki-table th,.wiki-table td{padding:10px;border:1px solid #d8dfd9;text-align:left;vertical-align:top;min-width:100px}#wiki-page pre{white-space:pre-wrap;overflow-wrap:anywhere}#wiki-page dl{display:grid;grid-template-columns:minmax(85px,25%) 1fr;gap:8px}#wiki-page dd{margin:0}#wiki-page h3{margin-top:26px}#wiki-editor{width:min(900px,94vw)}#wiki-editor-text{width:100%;font-family:monospace}.library-filters{flex-wrap:wrap}@media(max-width:900px){.wiki-grid{grid-template-columns:1fr}.wiki-grid>div:first-child{max-height:360px;overflow:auto}.tabs{flex-wrap:wrap}.section-head{flex-wrap:wrap}}
+
+/* PDF original viewer */
+dialog#pdf-dialog{width:min(1400px,96vw);height:min(880px,90vh);max-height:90vh;padding:18px;display:none}
+dialog#pdf-dialog[open]{display:flex;flex-direction:column}
+dialog#pdf-dialog .section-head{margin-bottom:12px}
+dialog#pdf-dialog .section-head .actions{margin:0}
+dialog#pdf-dialog iframe{flex:1;width:100%;min-height:0;border:1px solid #dbe5df;border-radius:10px;background:#fff}
+.research-app .badge.marks{background:#fbeed2;color:#8a5a20}

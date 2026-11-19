@@ -154,7 +154,7 @@ class WorkbenchTests(unittest.TestCase):
         variables={'rules':'GB/T 7714', 'selection':'数字化转型提高企业生产率。'}
         loader=PromptLoader(self.store.workspace.root)
         for task in TASKS:
-            if task in ('import','idea-lab','idea-lab.deepen','wiki.extract'):continue
+            if task in ('import','idea-lab','idea-lab.deepen','wiki.extract','pdf.card'):continue
             with self.subTest(task=task):
                 current=copy.deepcopy(docs)
                 if task in ('compare','synthesize','writing-style.batch'):

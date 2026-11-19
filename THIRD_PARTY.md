@@ -5,3 +5,5 @@
 - Unlimited OCR 2 及其权重不随插件分发。OCR 适配器调用用户已有本地 Transformers 环境和官方 Markdown 转换函数；其代码与模型按各自上游许可使用。
 - DeepSeek Harness、Cordis 与其模型/技能服务作为宿主依赖，不复制到插件；认证与模型传输由宿主负责。
 - Python 可选依赖及前端 Markdown 清理使用原独立业务包声明的依赖，不将第三方二进制随插件发布。
+
+- `upstream/prompts/card_note/atomic_card_writer*.md` 复制自同一本机 Apache-2.0 项目的 `prompts/card_note/`，保留原提示词并适配本地 PDF 来源。卡片字段、四节正文及 Obsidian 导出参考其 `backend/services/card_notes.py`；本地 SQLite、阅读连接和 PDF 定位为本插件实现，未引入原服务或用户登录系统。

@@ -10,7 +10,7 @@ import { ReadingService, saveSettings } from './service.js';
 import { panelProxy } from './panel-proxy.js';
 
 export const name = 'deep-reading';
-export const inject = ['skills', 'llm', 'agentDefaultModel', 'directoryPicker'];
+export const inject = ['skills', 'llm', 'agentDefaultModel', 'directoryPicker', 'attachments'];
 
 /** Register authenticated routes and own backend replacements through disposal. */
 export function apply(ctx, config = {}) {
@@ -74,7 +74,7 @@ export function apply(ctx, config = {}) {
   async function start(path) {
     await validate(path);
     if (disposed) throw new Error('插件正在关闭');
-    service = new ReadingService({ root, home: path, settings, llm: ctx.llm, messages: llmMessages, selection, log });
+    service = new ReadingService({ root, home: path, settings, llm: ctx.llm, attachments: ctx.attachments, messages: llmMessages, selection, log });
     await service.start();
     startupError = undefined;
   }
@@ -109,6 +109,18 @@ export function apply(ctx, config = {}) {
       finally { pickers.delete(pending); }
     }
     if (changing) throw new Error('目录操作正在进行，请稍候');
+    if(path==='/control/notes-status'){
+      await initial;if(service?.status!=='ready')throw new Error('请先启动文献后台');
+      return service.call('/bridge/notes/status');
+    }
+    if(path==='/control/notes-save'||path==='/control/notes-rebuild'){
+      changing=true;
+      operation=(async()=>{try{
+        await initial;if(service?.status!=='ready')throw new Error('请先启动文献后台');
+        return await service.call(path==='/control/notes-save'?'/bridge/notes/configure':'/bridge/notes/rebuild',body,lifetime.signal,120000);
+      }finally{changing=false;}})();
+      return operation;
+    }
     if (path === '/control/validate') return validate(body.path);
     if (!['/control/save', '/control/retry'].includes(path)) throw new Error('Unknown control request');
     changing = true;

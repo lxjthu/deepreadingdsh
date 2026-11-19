@@ -18,6 +18,7 @@ registerHooks({resolve(specifier,context,next){
   const settingsFile=join(tmp,'machine.json'), first=join(tmp,'原库'), second=join(tmp,'中文 空库');
   const ctx=new Context();let server,picked=second,opened=0;
   ctx.provide('skills',{register:()=>()=>{}});
+  ctx.provide('attachments',{saveImages:async()=>[]});
   ctx.provide('llm',{async *stream(options){
     if(!options.signal.aborted)await new Promise(resolve=>options.signal.addEventListener('abort',resolve,{once:true}));
     yield {type:'finish',reason:{kind:'aborted'}};
@@ -38,6 +39,11 @@ registerHooks({resolve(specifier,context,next){
   async function ready(){const end=Date.now()+10000;let state;while(Date.now()<end){state=await api('/control/status');if(state.status==='ready')return state;if(state.status==='failed')throw Error(state.error);await new Promise(resolve=>setTimeout(resolve,30));}throw Error('Not ready: '+JSON.stringify(state));}
   try{
     await ready();
+    const noteFolder=join(tmp,'Obsidian 卡片');
+    assert.equal((await api('/control/notes-status')).folder,join(first,'card-notes'));
+    assert.equal((await api('/control/notes-save',{path:noteFolder})).folder,noteFolder);
+    assert.equal((await api('/control/notes-rebuild',{})).errors.length,0);
+    assert.equal((await fetch(url+'/control/notes-status')).status,401);
     assert.equal((await fetch(url+'/control/status')).status,401);
     assert.equal((await api('/control/pick',{})).path,second);assert.equal(opened,1);
     picked=null;assert.equal((await api('/control/pick',{})).path,null);assert.equal((await api('/control/status')).home,first);
@@ -46,6 +52,7 @@ registerHooks({resolve(specifier,context,next){
     const busy=await api('/api/import',{topic_id:topic.id,path:paper,engine:'pymupdf',auto_organize:true});
     while((await api('/api/state')).tasks[0].status!=='running')await new Promise(resolve=>setTimeout(resolve,20));
     await api('/control/save',{path:second},false);
+    await api('/control/notes-save',{path:join(tmp,'busy notes')},false);
     assert.equal((await api('/control/status')).home,first);
     await api('/api/cancel',{id:busy.id});
     while((await api('/api/state')).tasks.some(t=>t.status==='running'||t.status==='queued'))await new Promise(resolve=>setTimeout(resolve,50));

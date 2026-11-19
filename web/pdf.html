@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PDF 原文 · 文献研究工作台</title><link rel="stylesheet" href="./pdf.css"></head>
+<body class="pdf-app">
+<header id="toolbar">
+  <div class="doc"><b id="doc-title">PDF 原文</b><span id="doc-meta"></span></div>
+  <div class="toolbar-actions">
+    <div class="tools" role="group" aria-label="标记工具">
+      <button type="button" data-tool="select" class="active" title="拖动选择文字，可复制">选择</button>
+      <button type="button" data-tool="highlight" title="选中文字自动高亮；空白处拖动则框选">高亮</button>
+      <button type="button" data-tool="box" title="拖动框选，松开后保存或取消；Esc 退出框选">框选</button>
+      <button type="button" data-tool="note" title="点击页面写便签">便签</button>
+    </div>
+    <div id="box-actions" hidden><button id="box-save" type="button" disabled>保存框选</button><button id="box-cancel" type="button">取消框选</button></div>
+    <div id="colors" class="colors" role="group" aria-label="标记颜色"></div>
+    <div class="zoom">
+      <button type="button" id="zoom-out" title="缩小">−</button><span id="zoom-label">100%</span><button type="button" id="zoom-in" title="放大">＋</button><button type="button" id="fit" title="适应窗口宽度">适应宽度</button>
+    </div>
+    <button type="button" id="marks-toggle">卡片与标记 <span id="mark-count">0</span></button>
+    <a id="raw-file" href="#" target="_blank" rel="noopener">PDF 原文件</a>
+  </div>
+</header>
+<main>
+  <div id="pages" aria-label="PDF 页面"></div>
+  <aside id="marks-panel" aria-label="标记列表">
+    <div class="marks-head"><b>卡片与标记</b><button type="button" id="marks-close">收起</button></div>
+    <p class="marks-hint">高亮选中的文字，或框选页面区域后保存；Esc 取消待保存框选，已保存框可点击右上角 × 删除。便签点击页面即可添加。标记保存在本机资料库。</p>
+    <section id="cards-section" aria-label="PDF 选段卡片">
+      <h2>选段卡片</h2>
+      <label><input type="checkbox" id="auto-card" checked> 选择文字后自动生成卡片</label>
+      <p>松开鼠标后等待 1 秒开始。生成使用桌面当前模型，卡片保存在本机。</p>
+      <p id="card-feedback" role="status"></p>
+      <button id="retry-selection" type="button" hidden>重试当前选段</button>
+      <div id="cards-list"></div>
+    </section>
+    <section id="visual-section" aria-label="框选视觉识别"><h2>框选视觉识别</h2>
+      <p>保存框选后，勾选区域进行识别并制卡。公式使用 LaTeX，表格保留 Markdown，所有裁剪原图均保存供核对。</p>
+      <label>生成方式 <select id="visual-generation-mode"><option value="separate">每个框选分别生成卡片</option><option value="combined">多个框选合并生成一张卡片</option></select></label>
+      <div><button type="button" id="visual-all">全选框选</button><button type="button" id="visual-none">取消全选</button><button type="button" id="visual-generate">识别并生成卡片</button></div>
+      <p id="visual-count" role="status">已选 0 个区域</p><p id="visual-status" role="status"></p><div id="visual-results"></div>
+    </section>
+    <section id="highlight-batch" aria-label="高亮批量制卡"><h2>高亮选段</h2>
+      <label>生成方式 <select id="highlight-generation-mode"><option value="separate">每条分别生成卡片</option><option value="combined">合并生成一张卡片</option></select></label>
+      <div><button type="button" id="highlights-all">全选高亮</button><button type="button" id="highlights-none">取消全选</button><button type="button" id="highlights-generate">生成所选卡片</button></div>
+      <p id="highlight-selection-count" role="status">已选 0 条高亮</p><p id="highlight-batch-status" role="status"></p>
+    </section>
+    <div id="marks-list"></div>
+    <div class="marks-foot"><button type="button" id="marks-copy">复制全部标记</button><button type="button" id="marks-export">导出 Markdown</button></div>
+  </aside>
+</main>
+<div id="editor" class="hidden" role="dialog" aria-label="标记备注">
+  <p id="editor-title" class="editor-title">标记备注</p>
+  <blockquote id="editor-quote" class="editor-quote"></blockquote>
+  <label>备注<textarea id="editor-note" rows="4" placeholder="这条标记说明了什么？例如：核心机制、可用变量、质疑之处。"></textarea></label>
+  <div class="actions"><button type="button" id="editor-delete" class="danger hidden">删除标记</button><button type="button" id="editor-cancel">取消</button><button type="button" id="editor-save" class="primary">保存</button></div>
+</div>
+<dialog id="card-window" aria-label="卡片预览与编辑"><header><b>卡片预览与编辑</b><div><button type="button" id="card-browser">在独立窗口打开</button><a id="card-browser-link" target="_blank" rel="noopener noreferrer" hidden>打开卡片窗口</a><button type="button" id="card-window-close">关闭</button></div></header><p id="card-window-status" role="status"></p><iframe id="card-frame" title="卡片预览与编辑"></iframe></dialog>
+<div id="status" role="status">正在加载 PDF…</div>
+<div id="loading" class="loading">正在渲染原文…</div>
+<div id="fatal" class="fatal hidden"><h2>无法显示 PDF 原文</h2><p id="fatal-message"></p></div>
+<script src="./pdf.js"></script>
+</body></html>
